@@ -39,6 +39,12 @@
     <ClInclude Include="ChessGame.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="ChessPiece.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ChessBlock.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Chess.cpp">
@@ -54,6 +60,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="ChessGame.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ChessPiece.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ChessBlock.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

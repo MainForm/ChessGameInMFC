@@ -188,7 +188,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Chess.h" />
+    <ClInclude Include="ChessBlock.h" />
     <ClInclude Include="ChessGame.h" />
+    <ClInclude Include="ChessPiece.h" />
     <ClInclude Include="ChildView.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MainFrm.h" />
@@ -198,7 +200,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Chess.cpp" />
+    <ClCompile Include="ChessBlock.cpp" />
     <ClCompile Include="ChessGame.cpp" />
+    <ClCompile Include="ChessPiece.cpp" />
     <ClCompile Include="ChildView.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="pch.cpp">

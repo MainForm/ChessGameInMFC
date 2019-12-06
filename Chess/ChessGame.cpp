@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "ChessGame.h"
 
+using namespace Chess;
+
 ChessGame::ChessGame(CPoint sp) : ptStart(sp), iBlockSize(50)
 {
 
@@ -54,4 +56,10 @@ void ChessGame::ChessBoardMessage(CPoint ptCursor)
 
 	MessageBox(NULL, Msg, _T("Test"), MB_OK);
 
+}
+
+bool ChessGame::AddChessPiece(CPoint pt, int type, int team)
+{
+	
+	return false;
 }
