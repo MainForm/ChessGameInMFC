@@ -219,6 +219,18 @@
     <None Include="res\Chess.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Pieces picture\Bishop0.bmp" />
+    <Image Include="Pieces picture\Bishop1.bmp" />
+    <Image Include="Pieces picture\King0.bmp" />
+    <Image Include="Pieces picture\King1.bmp" />
+    <Image Include="Pieces picture\Knight0.bmp" />
+    <Image Include="Pieces picture\Knight1.bmp" />
+    <Image Include="Pieces picture\Pawn0.bmp" />
+    <Image Include="Pieces picture\Pawn1.bmp" />
+    <Image Include="Pieces picture\Queen0.bmp" />
+    <Image Include="Pieces picture\Queen1.bmp" />
+    <Image Include="Pieces picture\Rook0.bmp" />
+    <Image Include="Pieces picture\Rook1.bmp" />
     <Image Include="res\Chess.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

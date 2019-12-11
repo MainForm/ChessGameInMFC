@@ -5,10 +5,18 @@ using namespace Chess;
 
 ChessGame::ChessGame(CPoint sp) : ptStart(sp), iBlockSize(50)
 {
+	for (int i = 0; i < 2; i++) 
+		for(int i1 = 0;i1 < PIECE_COUNT;i1++)
+			this->bmChessPieces[i][i1].LoadBitmapW(IDB_KING_WHITE + (i * 10) + i1);
+
+	
+}
+
+ChessGame::~ChessGame() {
 
 }
 
-void ChessGame::PaintChessBoard(CPaintDC& dc)
+void ChessGame::PaintChessBoard(CPaintDC& dc) const
 {
 	CBrush bsBlockColor[2];
 	CBrush* bsOld;
@@ -39,6 +47,45 @@ void ChessGame::PaintChessBoard(CPaintDC& dc)
 	dc.SelectObject(*bsOld);
 }
 
+void Chess::ChessGame::PaintChessPiece(CPaintDC& dc, CPoint pt) 
+{
+	CBitmap* btOld;
+	CDC memDC;
+	ChessBlock& rfCB = this->Board[pt.y][pt.x];
+
+	if (rfCB.IsHaveChessPiece() == false)
+		return;
+
+	memDC.CreateCompatibleDC(&dc);
+	btOld = (CBitmap*)memDC.SelectObject(&bmChessPieces[rfCB.GetChessPieceTeam()][rfCB.GetChessPieceType()]);
+
+	dc.TransparentBlt(ptStart.x + (pt.x * 50), ptStart.y + ( pt.y * 50), 50, 50,&memDC, 0, 0, 100, 100, RGB(255, 255, 255));
+
+	memDC.SelectObject(btOld);
+	
+}
+
+void Chess::ChessGame::PaintChessPieces(CPaintDC& dc)
+{
+	for (int iy = 0; iy < BLOCK_COUNT; iy++) {
+		for (int ix = 0; ix < BLOCK_COUNT; ix++) {
+			PaintChessPiece(dc, CPoint(ix, iy));
+		}
+	}
+}
+
+
+void ChessGame::StartGame()
+{
+	int CPprocedure[BLOCK_COUNT] = { 2,4,3,1,0,3,4,2 };
+	for (int i = 0; i < BLOCK_COUNT; i++) {
+		AddChessPiece(CPoint(i, 0), CPprocedure[i], 1);
+		AddChessPiece(CPoint(i, 7), CPprocedure[i], 0);
+		AddChessPiece(CPoint(i, 1), PIECE_PAWN, 1);
+		AddChessPiece(CPoint(i, 6), PIECE_PAWN, 0);
+	}
+}
+
 void ChessGame::ChessBoardMessage(CPoint ptCursor)
 {
 	ptCursor -= ptStart;
@@ -50,16 +97,12 @@ void ChessGame::ChessBoardMessage(CPoint ptCursor)
 		|| ptCursor.y < 0 || ptCursor.y >= BLOCK_COUNT)
 		return;
 
-	CString Msg;
 
-	Msg.Format(_T("%d , %d"), ptCursor.x, ptCursor.y);
-
-	MessageBox(NULL, Msg, _T("Test"), MB_OK);
 
 }
 
 bool ChessGame::AddChessPiece(CPoint pt, int type, int team)
 {
-	
+	Board[pt.y][pt.x].AddChessPiece(type, team);
 	return false;
 }

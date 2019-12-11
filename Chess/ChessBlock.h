@@ -9,12 +9,20 @@ namespace Chess {
 	class ChessBlock
 	{
 	private:
-
+		CPoint ptPosition;
+		bool Moveable[2];
 		std::unique_ptr<ChessPiece> cp;
 	public:
 		ChessBlock();
 
-		template <class ChessType>
-		bool GetChessPiece(int team);
+		int GetChessPieceType() const;
+		int GetChessPieceTeam() const;
+
+		bool IsHaveChessPiece() const;
+
+		bool AddChessPiece(int type,int team);
+
+		void SetMove(int team);
 	};
+
 }

@@ -56,7 +56,7 @@ void CChildView::OnPaint()
 	// 그리기 메시지에 대해서는 CWnd::OnPaint()를 호출하지 마십시오.
 
 	this->Chess->PaintChessBoard(dc);
-
+	this->Chess->PaintChessPieces(dc);
 }
 
 
@@ -68,6 +68,8 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 	CWnd::OnLButtonDown(nFlags, point);
 
 	this->Chess->ChessBoardMessage(point);
+
+	this->Invalidate();
 }
 
 
@@ -78,8 +80,8 @@ int CChildView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
 
-	this->Chess = std::make_unique<ChessGame>(CPoint(10, 10));
-
+	this->Chess = std::make_unique<Chess::ChessGame>(CPoint(10, 10));
+	this->Chess->StartGame();
 	return 0;
 }
 

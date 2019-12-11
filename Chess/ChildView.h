@@ -19,7 +19,7 @@ public:
 
 // 특성입니다.
 public:
-	std::unique_ptr<ChessGame> Chess;
+	std::unique_ptr<Chess::ChessGame> Chess;
 	// 작업입니다.
 public:
 

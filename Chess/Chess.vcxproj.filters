@@ -83,5 +83,41 @@
     <Image Include="res\Chess.ico">
       <Filter>리소스 파일</Filter>
     </Image>
+    <Image Include="Pieces picture\Bishop0.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Pieces picture\Bishop1.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Pieces picture\King0.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Pieces picture\King1.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Pieces picture\Knight0.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Pieces picture\Knight1.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Pieces picture\Pawn0.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Pieces picture\Pawn1.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Pieces picture\Queen0.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Pieces picture\Queen1.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Pieces picture\Rook0.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Pieces picture\Rook1.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
 </Project>
