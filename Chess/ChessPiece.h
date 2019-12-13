@@ -24,13 +24,15 @@ namespace Chess {
 	private:
 		const int type;
 		int team;
+	protected:
+		int Foward(int Num,int add, int team);
 	public:
 
 		ChessPiece(int type,int team);
 		int GetType() const;
 		int GetTeam() const;
 
-		void Movement(ChessGame& cg);
+		virtual void Movement(ChessGame& cg,CPoint ptChessPiece);
 		ChessPiece ReturnType();
 	};
 
@@ -86,5 +88,7 @@ namespace Chess {
 	public:
 		Pawn(int type, int team);
 		Pawn ReturnType();
+
+		virtual void Movement(ChessGame& cg, CPoint ptChessPiece) override;
 	};
 }

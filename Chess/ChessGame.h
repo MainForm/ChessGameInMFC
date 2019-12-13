@@ -9,8 +9,6 @@ namespace Chess {
 	class ChessGame
 	{
 	private:
-		//friend ChessPiece;
-
 		static const int BLOCK_COUNT = 8;
 		ChessBlock Board[BLOCK_COUNT][BLOCK_COUNT];
 
@@ -19,17 +17,25 @@ namespace Chess {
 		CPoint ptSelect;
 		int iBlockSize;
 		bool bMove;
+		int turn;
+
+		bool IsRightPoint(CPoint pt) const;
 	public:
 		ChessGame(CPoint sp = { 0,0 });
 		void PaintChessPiece(CPaintDC& dc, CPoint pt);
 		void PaintChessPieces(CPaintDC& dc);
-		void PaintChessBoard(CPaintDC& dc) const;
+		void PaintChessBoard(CPaintDC& dc);
 
 		void StartGame();
 		void ChessBoardMessage(CPoint ptCursor);
 		void MoveChessPiece(CPoint ptTo, CPoint ptFrom);
 
 		bool AddChessPiece(CPoint pt,int type,int team);
+
+		CPoint GetSelectedPoint();
+
+		ChessBlock* GetChessBlock(CPoint pt);
+		void ClearAllMove();
 
 		virtual ~ChessGame();
 	};

@@ -4,6 +4,16 @@
 
 using namespace Chess;
 
+int Chess::ChessPiece::Foward(int Num,int add, int team)
+{
+	if (team == 0)
+		Num -= add;
+	else
+		Num += add;
+
+	return Num;
+}
+
 ChessPiece::ChessPiece(int type,int team) : type(type),team(team)
 {
 
@@ -11,16 +21,31 @@ ChessPiece::ChessPiece(int type,int team) : type(type),team(team)
 
 int Chess::ChessPiece::GetType() const
 {
+	if (this == nullptr)
+		return -1;
+
 	return this->type;
 }
 
 int Chess::ChessPiece::GetTeam() const
 {
+	if (this == nullptr)
+		return -1;
+
 	return this->team;
 }
 
-void Chess::ChessPiece::Movement(ChessGame& cg)
+void Chess::ChessPiece::Movement(ChessGame& cg, CPoint ptChessPiece)
 {
+	ChessBlock* cb = cg.GetChessBlock(ptChessPiece);
+
+	if (cb == nullptr)
+		return;
+
+	if (cb->CompareChessPiece(this) == false)
+		return;
+
+	cb->SetMove(this->team,1);
 }
 
 ChessPiece Chess::ChessPiece::ReturnType()
@@ -83,4 +108,23 @@ Pawn::Pawn(int type, int team) : ChessPiece(type,team)
 Pawn Chess::Pawn::ReturnType()
 {
 	return *this;
+}
+
+void Chess::Pawn::Movement(ChessGame& cg, CPoint ptChessPiece)
+{
+	ChessBlock* cb = cg.GetChessBlock(ptChessPiece);
+
+	if (cb == nullptr)
+		return;
+
+	if (cb->CompareChessPiece(this) == false)
+		return;
+
+	ChessBlock& rfCB = *cg.GetChessBlock(ptChessPiece);
+
+	int tteam = ChessPiece::GetTeam();
+	int tvalue = ChessPiece::GetType();
+	
+
+	cg.GetChessBlock(CPoint(ptChessPiece.x, Foward(ptChessPiece.y,1,tteam)))->SetMove(tteam, 1);
 }

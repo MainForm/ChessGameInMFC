@@ -9,8 +9,9 @@ namespace Chess {
 	class ChessBlock
 	{
 	private:
-		bool bMoveable[2];
+		int Moveable[2];
 		std::unique_ptr<ChessPiece> cp;
+		bool bCheck;
 	public:
 		ChessBlock();
 		ChessBlock(ChessBlock& cb);
@@ -22,7 +23,13 @@ namespace Chess {
 		bool AddChessPiece(int type,int team);
 		void DeleteChessPiece();
 
-		void SetMove(int team);
+		bool CompareChessPiece(ChessPiece* cp);
+
+		void SetMove(int team,int value);
+		int GetMove(int team) const;
+		void ClearMove();
+
+		void MovementChessPiece(ChessGame& cg, CPoint ptChessPiece);
 
 		ChessBlock operator=(ChessBlock& cb);
 	};

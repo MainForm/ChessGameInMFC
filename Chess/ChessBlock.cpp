@@ -10,13 +10,13 @@ Type* reset_unique(int type, int team) {
 
 ChessBlock::ChessBlock() : cp(nullptr)
 {
-	ZeroMemory(bMoveable, sizeof(bMoveable));
+	ZeroMemory(Moveable, sizeof(Moveable));
 }
 
 ChessBlock::ChessBlock(ChessBlock& cb) : cp(nullptr)
 {
 	cp.reset(reset_unique<decltype(cb.cp->ReturnType()) > (cb.cp->GetType(),cb.cp->GetTeam()));
-	ZeroMemory(bMoveable, sizeof(bMoveable));
+	ZeroMemory(Moveable, sizeof(Moveable));
 }
 
 int Chess::ChessBlock::GetChessPieceType() const
@@ -29,7 +29,7 @@ int Chess::ChessBlock::GetChessPieceType() const
 
 int Chess::ChessBlock::GetChessPieceTeam() const
 {
-	if (this->cp == false)
+	if (cp.get() == nullptr)
 		return -1;
 
 	return this->cp->GetTeam();
@@ -74,12 +74,38 @@ void Chess::ChessBlock::DeleteChessPiece()
 	cp.release();
 }
 
+bool Chess::ChessBlock::CompareChessPiece(ChessPiece* cp)
+{
+	return (this->cp.get() == cp);
+}
 
-void Chess::ChessBlock::SetMove(int team)
+
+void Chess::ChessBlock::SetMove(int team,int value)
 {
 	if(team != 0 && team != 1)
 		return;
-	bMoveable[team] = true;
+	Moveable[team] = value;
+}
+
+int Chess::ChessBlock::GetMove(int team) const
+{
+	if (team == 0 || team == 1)
+		return Moveable[team];
+	else
+		return 0;
+}
+
+void Chess::ChessBlock::ClearMove()
+{
+	ZeroMemory(Moveable, sizeof(Moveable));
+}
+
+void Chess::ChessBlock::MovementChessPiece(ChessGame& cg, CPoint ptChessPiece)
+{
+	if ((bool)cp == false)
+		return;
+
+	cp->Movement(cg, ptChessPiece);
 }
 
 ChessBlock Chess::ChessBlock::operator=(ChessBlock& cb)
