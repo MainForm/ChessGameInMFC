@@ -17,7 +17,7 @@ namespace Chess {
 	//because unique_ptr occur the error when using the abstract class.
 	//so I just use this class without making to abstract.
 
-	class ChassGame;
+	class ChessGame;
 
 	class ChessPiece
 	{
@@ -30,7 +30,8 @@ namespace Chess {
 		int GetType() const;
 		int GetTeam() const;
 
-		//virtual void Movement(ChessGame& cg);
+		void Movement(ChessGame& cg);
+		ChessPiece ReturnType();
 	};
 
 	class King : public ChessPiece
@@ -39,7 +40,7 @@ namespace Chess {
 
 	public:
 		King(int type, int team);
-
+		King ReturnType();
 	};
 
 	class Queen : public ChessPiece
@@ -48,7 +49,7 @@ namespace Chess {
 
 	public:
 		Queen(int type, int team);
-
+		Queen ReturnType();
 	};
 
 	class Rook : public ChessPiece
@@ -57,7 +58,7 @@ namespace Chess {
 
 	public:
 		Rook(int type, int team);
-
+		Rook ReturnType();
 	};
 
 	class Bishop : public ChessPiece
@@ -66,7 +67,7 @@ namespace Chess {
 
 	public:
 		Bishop(int type, int team);
-
+		Bishop ReturnType();
 	};
 
 	class Knight : public ChessPiece
@@ -75,7 +76,7 @@ namespace Chess {
 
 	public:
 		Knight(int type, int team);
-
+		Knight ReturnType();
 	};
 
 	class Pawn : public ChessPiece
@@ -84,6 +85,6 @@ namespace Chess {
 
 	public:
 		Pawn(int type, int team);
-
+		Pawn ReturnType();
 	};
 }

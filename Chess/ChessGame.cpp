@@ -3,7 +3,7 @@
 
 using namespace Chess;
 
-ChessGame::ChessGame(CPoint sp) : ptStart(sp), iBlockSize(50)
+ChessGame::ChessGame(CPoint sp) : ptStart(sp), iBlockSize(50), bMove(false)
 {
 	for (int i = 0; i < 2; i++) 
 		for(int i1 = 0;i1 < PIECE_COUNT;i1++)
@@ -99,6 +99,12 @@ void ChessGame::ChessBoardMessage(CPoint ptCursor)
 
 
 
+}
+
+void Chess::ChessGame::MoveChessPiece(CPoint ptTo, CPoint ptFrom)
+{
+	Board[ptTo.y][ptTo.x] = Board[ptFrom.y][ptFrom.x];
+	Board[ptFrom.y][ptFrom.x].DeleteChessPiece();
 }
 
 bool ChessGame::AddChessPiece(CPoint pt, int type, int team)

@@ -27,6 +27,7 @@ namespace Chess {
 
 		void StartGame();
 		void ChessBoardMessage(CPoint ptCursor);
+		void MoveChessPiece(CPoint ptTo, CPoint ptFrom);
 
 		bool AddChessPiece(CPoint pt,int type,int team);
 
