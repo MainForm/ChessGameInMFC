@@ -125,6 +125,14 @@ void Chess::Pawn::Movement(ChessGame& cg, CPoint ptChessPiece)
 	int tteam = ChessPiece::GetTeam();
 	int tvalue = ChessPiece::GetType();
 	
+	ChessBlock* ptTmp = cg.GetChessBlock(CPoint(ptChessPiece.x, Foward(ptChessPiece.y, 1, tteam)));
+	
+	if(ptTmp->IsHaveChessPiece() == false)
+		ptTmp->SetMove(tteam, 1);
 
-	cg.GetChessBlock(CPoint(ptChessPiece.x, Foward(ptChessPiece.y,1,tteam)))->SetMove(tteam, 1);
+	ptTmp = cg.GetChessBlock(CPoint(ptChessPiece.x, Foward(ptChessPiece.y, 2, tteam)));
+
+	if ((ptChessPiece.y == 1 || ptChessPiece.y == 6) && ptTmp->IsHaveChessPiece() == false)
+		ptTmp->SetMove(tteam, 1);
+
 }

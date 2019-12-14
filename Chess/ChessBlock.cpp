@@ -116,6 +116,8 @@ ChessBlock Chess::ChessBlock::operator=(ChessBlock& cb)
 	if ((bool)this->cp == true)
 		cp.release();
 
+	const char * Test = typeid(decltype(cb.cp->ReturnType())).name();
+
 	cp.reset(reset_unique<decltype(cb.cp->ReturnType()) >(cb.cp->GetType(), cb.cp->GetTeam()));
 
 	return *this;
