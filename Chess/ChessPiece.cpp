@@ -58,17 +58,175 @@ King::King(int type, int team) : ChessPiece(type,team)
 {
 }
 
+void Chess::King::Movement(ChessGame& cg, CPoint ptChessPiece)
+{
+	ChessBlock* cb = cg.GetChessBlock(ptChessPiece);
+
+	if (cb == nullptr)
+		return;
+
+	if (cb->CompareChessPiece(this) == false)
+		return;
+
+	ChessBlock& rfCB = *cg.GetChessBlock(ptChessPiece);
+
+	int tteam = ChessPiece::GetTeam();
+	int tvalue = ChessPiece::GetType();
+
+	CPoint ptMove[8] = {
+		{1,0},{-1,0},{0,1},{0,-1},{1,1},{1,-1},{-1,1},{-1,-1}
+	};
+
+	ChessBlock* ptTmp = nullptr;
+
+	for (int i = 0; i < 8; i++) {
+		ptTmp = cg.GetChessBlock(ptChessPiece + ptMove[i]);
+		if (ptTmp == nullptr)
+			continue;
+
+		ptTmp->SetMove(tteam, 1);
+	}
+}
+
+ChessPiece* Chess::King::CopyChessPiece()
+{
+	return new King(ChessPiece::GetType(), ChessPiece::GetTeam());
+}
+
 
 Queen::Queen(int type, int team) : ChessPiece(type,team)
 {
+
+}
+
+void Chess::Queen::Movement(ChessGame& cg, CPoint ptChessPiece)
+{
+	ChessBlock* cb = cg.GetChessBlock(ptChessPiece);
+
+	if (cb == nullptr)
+		return;
+
+	if (cb->CompareChessPiece(this) == false)
+		return;
+
+	ChessBlock& rfCB = *cg.GetChessBlock(ptChessPiece);
+
+	int tteam = ChessPiece::GetTeam();
+	int tvalue = ChessPiece::GetType();
+
+	CPoint ptMove[8] = {
+		{1,0},{-1,0},{0,1},{0,-1},{1,1},{1,-1},{-1,1},{-1,-1}
+	};
+
+	ChessBlock* ptTmp = nullptr;
+
+	for (int i = 0; i < 8; i++) {
+		for (CPoint ptIndex = ptChessPiece + ptMove[i]; cg.IsRightPoint(ptIndex); ptIndex += ptMove[i]) {
+			ptTmp = cg.GetChessBlock(ptIndex);
+			if (ptTmp == nullptr)
+				break;
+
+			ptTmp->SetMove(tteam, 1);
+
+			if (ptTmp->IsHaveChessPiece() == true)
+				break;
+		}
+	}
+}
+
+ChessPiece* Chess::Queen::CopyChessPiece()
+{
+	return new Queen(ChessPiece::GetType(), ChessPiece::GetTeam());
 }
 
 Rook::Rook(int type, int team) : ChessPiece(type,team)
 {
+
+}
+
+void Chess::Rook::Movement(ChessGame& cg, CPoint ptChessPiece)
+{
+	ChessBlock* cb = cg.GetChessBlock(ptChessPiece);
+
+	if (cb == nullptr)
+		return;
+
+	if (cb->CompareChessPiece(this) == false)
+		return;
+
+	ChessBlock& rfCB = *cg.GetChessBlock(ptChessPiece);
+
+	int tteam = ChessPiece::GetTeam();
+	int tvalue = ChessPiece::GetType();
+
+	CPoint ptMove[4] = {
+		{1,0},{-1,0},{0,1},{0,-1}
+	};
+
+	ChessBlock* ptTmp = nullptr;
+
+	for (int i = 0; i < 4; i++) {
+		for (CPoint ptIndex = ptChessPiece + ptMove[i]; cg.IsRightPoint(ptIndex); ptIndex += ptMove[i]) {
+			ptTmp = cg.GetChessBlock(ptIndex);
+			if (ptTmp == nullptr)
+				break;
+
+			ptTmp->SetMove(tteam, 1);
+
+			if (ptTmp->IsHaveChessPiece() == true)
+				break;
+		}
+	}
+}
+
+ChessPiece* Chess::Rook::CopyChessPiece()
+{
+	return new Rook(ChessPiece::GetType(), ChessPiece::GetTeam());
 }
 
 Bishop::Bishop(int type, int team) : ChessPiece(type,team)
 {
+
+}
+
+void Chess::Bishop::Movement(ChessGame& cg, CPoint ptChessPiece)
+{
+	ChessBlock* cb = cg.GetChessBlock(ptChessPiece);
+
+	if (cb == nullptr)
+		return;
+
+	if (cb->CompareChessPiece(this) == false)
+		return;
+
+	ChessBlock& rfCB = *cg.GetChessBlock(ptChessPiece);
+
+	int tteam = ChessPiece::GetTeam();
+	int tvalue = ChessPiece::GetType();
+
+	CPoint ptMove[4] = { 
+		{1,1},{1,-1},{-1,1},{-1,-1}
+	};
+
+	ChessBlock* ptTmp = nullptr;
+
+	for (int i = 0; i < 4; i++) {
+		for (CPoint ptIndex = ptChessPiece + ptMove[i]; cg.IsRightPoint(ptIndex); ptIndex += ptMove[i]) {
+			ptTmp = cg.GetChessBlock(ptIndex);
+			if (ptTmp == nullptr)
+				break;
+
+			ptTmp->SetMove(tteam, 1);
+
+			if (ptTmp->IsHaveChessPiece() == true)
+				break;
+		}
+	}
+}
+
+ChessPiece* Chess::Bishop::CopyChessPiece()
+{
+	return new Bishop(ChessPiece::GetType(), ChessPiece::GetTeam());
 }
 
 

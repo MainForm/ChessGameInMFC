@@ -42,7 +42,8 @@ namespace Chess {
 
 	public:
 		King(int type, int team);
-
+		virtual void Movement(ChessGame& cg, CPoint ptChessPiece) override;
+		virtual ChessPiece* CopyChessPiece() override;
 	};
 
 	class Queen : public ChessPiece
@@ -51,7 +52,8 @@ namespace Chess {
 
 	public:
 		Queen(int type, int team);
-
+		virtual void Movement(ChessGame& cg, CPoint ptChessPiece) override;
+		virtual ChessPiece* CopyChessPiece() override;
 	};
 
 	class Rook : public ChessPiece
@@ -60,7 +62,8 @@ namespace Chess {
 
 	public:
 		Rook(int type, int team);
-
+		virtual void Movement(ChessGame& cg, CPoint ptChessPiece) override;
+		virtual ChessPiece* CopyChessPiece() override;
 	};
 
 	class Bishop : public ChessPiece
@@ -69,7 +72,8 @@ namespace Chess {
 
 	public:
 		Bishop(int type, int team);
-
+		virtual void Movement(ChessGame& cg, CPoint ptChessPiece) override;
+		virtual ChessPiece* CopyChessPiece() override;
 	};
 
 	class Knight : public ChessPiece
