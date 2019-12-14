@@ -35,7 +35,7 @@ int Chess::ChessPiece::GetTeam() const
 	return this->team;
 }
 
-void Chess::ChessPiece::Movement(ChessGame& cg, CPoint ptChessPiece)
+void Chess::ChessPiece::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
 {
 	ChessBlock* cb = cg.GetChessBlock(ptChessPiece);
 
@@ -50,7 +50,7 @@ void Chess::ChessPiece::Movement(ChessGame& cg, CPoint ptChessPiece)
 
 ChessPiece* Chess::ChessPiece::CopyChessPiece()
 {
-	return new ChessPiece(type,team);
+	return nullptr;
 }
 
 
@@ -58,7 +58,7 @@ King::King(int type, int team) : ChessPiece(type,team)
 {
 }
 
-void Chess::King::Movement(ChessGame& cg, CPoint ptChessPiece)
+void Chess::King::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
 {
 	ChessBlock* cb = cg.GetChessBlock(ptChessPiece);
 
@@ -84,7 +84,7 @@ void Chess::King::Movement(ChessGame& cg, CPoint ptChessPiece)
 		if (ptTmp == nullptr)
 			continue;
 
-		ptTmp->SetMove(tteam, 1);
+		(ptTmp->*Func)(tteam, 1);
 	}
 }
 
@@ -99,7 +99,7 @@ Queen::Queen(int type, int team) : ChessPiece(type,team)
 
 }
 
-void Chess::Queen::Movement(ChessGame& cg, CPoint ptChessPiece)
+void Chess::Queen::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
 {
 	ChessBlock* cb = cg.GetChessBlock(ptChessPiece);
 
@@ -126,7 +126,7 @@ void Chess::Queen::Movement(ChessGame& cg, CPoint ptChessPiece)
 			if (ptTmp == nullptr)
 				break;
 
-			ptTmp->SetMove(tteam, 1);
+			(ptTmp->*Func)(tteam, 1);
 
 			if (ptTmp->IsHaveChessPiece() == true)
 				break;
@@ -144,7 +144,7 @@ Rook::Rook(int type, int team) : ChessPiece(type,team)
 
 }
 
-void Chess::Rook::Movement(ChessGame& cg, CPoint ptChessPiece)
+void Chess::Rook::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
 {
 	ChessBlock* cb = cg.GetChessBlock(ptChessPiece);
 
@@ -171,7 +171,7 @@ void Chess::Rook::Movement(ChessGame& cg, CPoint ptChessPiece)
 			if (ptTmp == nullptr)
 				break;
 
-			ptTmp->SetMove(tteam, 1);
+			(ptTmp->*Func)(tteam, 1);
 
 			if (ptTmp->IsHaveChessPiece() == true)
 				break;
@@ -189,7 +189,7 @@ Bishop::Bishop(int type, int team) : ChessPiece(type,team)
 
 }
 
-void Chess::Bishop::Movement(ChessGame& cg, CPoint ptChessPiece)
+void Chess::Bishop::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
 {
 	ChessBlock* cb = cg.GetChessBlock(ptChessPiece);
 
@@ -216,7 +216,7 @@ void Chess::Bishop::Movement(ChessGame& cg, CPoint ptChessPiece)
 			if (ptTmp == nullptr)
 				break;
 
-			ptTmp->SetMove(tteam, 1);
+			(ptTmp->*Func)(tteam, 1);
 
 			if (ptTmp->IsHaveChessPiece() == true)
 				break;
@@ -234,7 +234,7 @@ Knight::Knight(int type, int team) : ChessPiece(type,team)
 {
 }
 
-void Chess::Knight::Movement(ChessGame& cg, CPoint ptChessPiece)
+void Chess::Knight::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
 {
 	ChessBlock* cb = cg.GetChessBlock(ptChessPiece);
 
@@ -261,7 +261,7 @@ void Chess::Knight::Movement(ChessGame& cg, CPoint ptChessPiece)
 		if (ptTmp == nullptr)
 			continue;
 
-		ptTmp->SetMove(tteam, 1);
+		(ptTmp->*Func)(tteam, 1);
 	}
 }
 
@@ -274,7 +274,7 @@ Pawn::Pawn(int type, int team) : ChessPiece(type,team)
 {
 }
 
-void Chess::Pawn::Movement(ChessGame& cg, CPoint ptChessPiece)
+void Chess::Pawn::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
 {
 	ChessBlock* cb = cg.GetChessBlock(ptChessPiece);
 
@@ -291,13 +291,15 @@ void Chess::Pawn::Movement(ChessGame& cg, CPoint ptChessPiece)
 	
 	ChessBlock* ptTmp = cg.GetChessBlock(CPoint(ptChessPiece.x, Foward(ptChessPiece.y, 1, tteam)));
 	
-	if(ptTmp->IsHaveChessPiece() == false)
-		ptTmp->SetMove(tteam, 1);
-
+	if(ptTmp != nullptr &&ptTmp->IsHaveChessPiece() == false)
+		(ptTmp->*Func)(tteam, 1);
+	
+	
 	ptTmp = cg.GetChessBlock(CPoint(ptChessPiece.x, Foward(ptChessPiece.y, 2, tteam)));
 
-	if ((ptChessPiece.y == 1 || ptChessPiece.y == 6) && ptTmp->IsHaveChessPiece() == false)
-		ptTmp->SetMove(tteam, 1);
+	if (ptTmp != nullptr && (ptChessPiece.y == 1 || ptChessPiece.y == 6) && ptTmp->IsHaveChessPiece() == false)
+		(ptTmp->*Func)(tteam, 1);
+	
 
 	for (int i = -1; i <= 1; i += 2) {
 		ptTmp = cg.GetChessBlock(CPoint(Foward(ptChessPiece.x,i,0), Foward(ptChessPiece.y, 1, tteam)));
@@ -305,7 +307,7 @@ void Chess::Pawn::Movement(ChessGame& cg, CPoint ptChessPiece)
 			continue;
 
 		if (ptTmp->IsHaveChessPiece() == true)
-			ptTmp->SetMove(tteam, 1);
+			(ptTmp->*Func)(tteam, 1);
 	}
 }
 

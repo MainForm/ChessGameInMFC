@@ -1,16 +1,18 @@
 #include "pch.h"
+#include "ChessGame.h"
 #include "ChessBlock.h"
 
 using namespace Chess;
 
-ChessBlock::ChessBlock() : cp(nullptr)
+ChessBlock::ChessBlock(ChessGame* cg) : cp(nullptr),ptCG(cg)
 {
 	ZeroMemory(Moveable, sizeof(Moveable));
 }
 
-ChessBlock::ChessBlock(ChessBlock& cb) : cp(nullptr)
+ChessBlock::ChessBlock(ChessBlock& cb) : cp(nullptr),ptCG(cb.ptCG)
 {
-	cp.reset(cb.cp->CopyChessPiece());
+	if(cb.cp != nullptr)
+		cp.reset(cb.cp->CopyChessPiece());
 	ZeroMemory(Moveable, sizeof(Moveable));
 }
 
@@ -86,7 +88,28 @@ void Chess::ChessBlock::SetMove(int team,int value)
 	if (team == cp->GetTeam())
 		return;
 
+	ChessBlock cbTmp = *this;
+
+	*this = *ptCG->GetChessBlock(ptCG->GetSelectedPoint());
+
+	ChessBlock& rfCBTmp = *(ptCG->GetChessBlock(ptCG->GetSelectedPoint()));
+	*ptCG->GetChessBlock(ptCG->GetSelectedPoint()) = ChessBlock(this->ptCG);
+
+	if (ptCG->IsCheck(team)) {
+		*ptCG->GetChessBlock(ptCG->GetSelectedPoint()) = *this;
+		*this = cbTmp;
+		return;
+	}
+
+	*ptCG->GetChessBlock(ptCG->GetSelectedPoint()) = *this;
+	*this = cbTmp;
+
 	Moveable[team] = value;
+}
+
+void Chess::ChessBlock::SetCheck(int team,int value)
+{
+	bCheck = value;
 }
 
 int Chess::ChessBlock::GetMove(int team) const
@@ -97,23 +120,43 @@ int Chess::ChessBlock::GetMove(int team) const
 		return 0;
 }
 
+bool Chess::ChessBlock::GetCheck() const
+{
+	return bCheck;
+}
+
 void Chess::ChessBlock::ClearMove()
 {
 	ZeroMemory(Moveable, sizeof(Moveable));
 }
 
-void Chess::ChessBlock::MovementChessPiece(ChessGame& cg, CPoint ptChessPiece)
+void Chess::ChessBlock::SetChessGame(ChessGame* ptCG)
+{
+	this->ptCG = ptCG;
+}
+
+void Chess::ChessBlock::MovementChessPiece(ChessGame& cg, CPoint ptChessPiece,bool bChecking)
 {
 	if ((bool)cp == false)
 		return;
 
-	cp->Movement(cg, ptChessPiece);
+	if (cg.IsRightPoint(ptChessPiece) == false)
+		return;
+
+	if (bChecking == false)
+		cp->Movement(cg, ptChessPiece, &ChessBlock::SetMove);
+	else
+		cp->Movement(cg, ptChessPiece, &ChessBlock::SetCheck);
 }
 
 ChessBlock Chess::ChessBlock::operator=(ChessBlock& cb)
 {
-	if (cb.cp == false)
+	this->ptCG = cb.ptCG;
+
+	if (cb.cp == false) {
+		cp.release();
 		return *this;
+	}
 
 	if ((bool)this->cp == true)
 		cp.release();

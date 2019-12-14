@@ -34,6 +34,9 @@ namespace Chess {
 
 		ChessBlock* GetChessBlock(CPoint pt);
 		void ClearAllMove();
+		void ClearAllCheck();
+
+		bool IsCheck(int team);
 
 		bool IsRightPoint(CPoint pt) const;
 		virtual ~ChessGame();

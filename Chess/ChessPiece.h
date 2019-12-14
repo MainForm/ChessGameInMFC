@@ -16,8 +16,10 @@ namespace Chess {
 	//ChessPiece class can't be transfrom to abstract class.
 	//because unique_ptr occur the error when using the abstract class.
 	//so I just use this class without making to abstract.
-
 	class ChessGame;
+	class ChessBlock;
+
+	using SetFunc = void (ChessBlock::*)(int, int);
 
 	class ChessPiece
 	{
@@ -32,7 +34,7 @@ namespace Chess {
 		int GetType() const;
 		int GetTeam() const;
 
-		virtual void Movement(ChessGame& cg,CPoint ptChessPiece);
+		virtual void Movement(ChessGame& cg,CPoint ptChessPiece, SetFunc Func);
 		virtual ChessPiece* CopyChessPiece();
 	};
 
@@ -42,7 +44,7 @@ namespace Chess {
 
 	public:
 		King(int type, int team);
-		virtual void Movement(ChessGame& cg, CPoint ptChessPiece) override;
+		virtual void Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func) override;
 		virtual ChessPiece* CopyChessPiece() override;
 	};
 
@@ -52,7 +54,7 @@ namespace Chess {
 
 	public:
 		Queen(int type, int team);
-		virtual void Movement(ChessGame& cg, CPoint ptChessPiece) override;
+		virtual void Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func) override;
 		virtual ChessPiece* CopyChessPiece() override;
 	};
 
@@ -62,7 +64,7 @@ namespace Chess {
 
 	public:
 		Rook(int type, int team);
-		virtual void Movement(ChessGame& cg, CPoint ptChessPiece) override;
+		virtual void Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func) override;
 		virtual ChessPiece* CopyChessPiece() override;
 	};
 
@@ -72,7 +74,7 @@ namespace Chess {
 
 	public:
 		Bishop(int type, int team);
-		virtual void Movement(ChessGame& cg, CPoint ptChessPiece) override;
+		virtual void Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func) override;
 		virtual ChessPiece* CopyChessPiece() override;
 	};
 
@@ -83,7 +85,7 @@ namespace Chess {
 	public:
 		Knight(int type, int team);
 
-		virtual void Movement(ChessGame& cg, CPoint ptChessPiece) override;
+		virtual void Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func) override;
 		virtual ChessPiece* CopyChessPiece() override;
 	};
 
@@ -94,7 +96,7 @@ namespace Chess {
 	public:
 		Pawn(int type, int team);
 
-		virtual void Movement(ChessGame& cg, CPoint ptChessPiece) override;
+		virtual void Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func) override;
 		virtual ChessPiece* CopyChessPiece() override;
 	};
 }
