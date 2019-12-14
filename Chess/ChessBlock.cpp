@@ -3,11 +3,6 @@
 
 using namespace Chess;
 
-template<class Type>
-Type* reset_unique(int type, int team) {
-	return new Type(type, team);
-}
-
 ChessBlock::ChessBlock() : cp(nullptr)
 {
 	ZeroMemory(Moveable, sizeof(Moveable));
@@ -15,7 +10,7 @@ ChessBlock::ChessBlock() : cp(nullptr)
 
 ChessBlock::ChessBlock(ChessBlock& cb) : cp(nullptr)
 {
-	cp.reset(reset_unique<decltype(cb.cp->ReturnType()) > (cb.cp->GetType(),cb.cp->GetTeam()));
+	cp.reset(cb.cp->CopyChessPiece());
 	ZeroMemory(Moveable, sizeof(Moveable));
 }
 
@@ -37,7 +32,10 @@ int Chess::ChessBlock::GetChessPieceTeam() const
 
 bool Chess::ChessBlock::IsHaveChessPiece() const
 {
-	return (bool)this->cp;
+	if (cp.get() == nullptr)
+		return false;
+	else
+		return true;
 }
 
 bool ChessBlock::AddChessPiece(int type, int team)
@@ -84,6 +82,10 @@ void Chess::ChessBlock::SetMove(int team,int value)
 {
 	if(team != 0 && team != 1)
 		return;
+
+	if (team == cp->GetTeam())
+		return;
+
 	Moveable[team] = value;
 }
 
@@ -116,9 +118,7 @@ ChessBlock Chess::ChessBlock::operator=(ChessBlock& cb)
 	if ((bool)this->cp == true)
 		cp.release();
 
-	const char * Test = typeid(decltype(cb.cp->ReturnType())).name();
-
-	cp.reset(reset_unique<decltype(cb.cp->ReturnType()) >(cb.cp->GetType(), cb.cp->GetTeam()));
+	cp.reset(cb.cp->CopyChessPiece());
 
 	return *this;
 }

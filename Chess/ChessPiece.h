@@ -33,7 +33,7 @@ namespace Chess {
 		int GetTeam() const;
 
 		virtual void Movement(ChessGame& cg,CPoint ptChessPiece);
-		ChessPiece ReturnType();
+		virtual ChessPiece* CopyChessPiece();
 	};
 
 	class King : public ChessPiece
@@ -42,7 +42,7 @@ namespace Chess {
 
 	public:
 		King(int type, int team);
-		King ReturnType();
+
 	};
 
 	class Queen : public ChessPiece
@@ -51,7 +51,7 @@ namespace Chess {
 
 	public:
 		Queen(int type, int team);
-		Queen ReturnType();
+
 	};
 
 	class Rook : public ChessPiece
@@ -60,7 +60,7 @@ namespace Chess {
 
 	public:
 		Rook(int type, int team);
-		Rook ReturnType();
+
 	};
 
 	class Bishop : public ChessPiece
@@ -69,7 +69,7 @@ namespace Chess {
 
 	public:
 		Bishop(int type, int team);
-		Bishop ReturnType();
+
 	};
 
 	class Knight : public ChessPiece
@@ -78,7 +78,9 @@ namespace Chess {
 
 	public:
 		Knight(int type, int team);
-		Knight ReturnType();
+
+		virtual void Movement(ChessGame& cg, CPoint ptChessPiece) override;
+		virtual ChessPiece* CopyChessPiece() override;
 	};
 
 	class Pawn : public ChessPiece
@@ -87,8 +89,8 @@ namespace Chess {
 
 	public:
 		Pawn(int type, int team);
-		Pawn ReturnType();
 
 		virtual void Movement(ChessGame& cg, CPoint ptChessPiece) override;
+		virtual ChessPiece* CopyChessPiece() override;
 	};
 }

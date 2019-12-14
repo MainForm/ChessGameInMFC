@@ -48,18 +48,14 @@ void Chess::ChessPiece::Movement(ChessGame& cg, CPoint ptChessPiece)
 	cb->SetMove(this->team,1);
 }
 
-ChessPiece Chess::ChessPiece::ReturnType()
+ChessPiece* Chess::ChessPiece::CopyChessPiece()
 {
-	return *this;
+	return new ChessPiece(type,team);
 }
+
 
 King::King(int type, int team) : ChessPiece(type,team)
 {
-}
-
-King Chess::King::ReturnType()
-{
-	return *this;
 }
 
 
@@ -67,28 +63,12 @@ Queen::Queen(int type, int team) : ChessPiece(type,team)
 {
 }
 
-Queen Chess::Queen::ReturnType()
-{
-	return *this;
-}
-
-
 Rook::Rook(int type, int team) : ChessPiece(type,team)
 {
 }
 
-Rook Chess::Rook::ReturnType()
-{
-	return *this;
-}
-
 Bishop::Bishop(int type, int team) : ChessPiece(type,team)
 {
-}
-
-Bishop Chess::Bishop::ReturnType()
-{
-	return *this;
 }
 
 
@@ -96,18 +76,44 @@ Knight::Knight(int type, int team) : ChessPiece(type,team)
 {
 }
 
-Knight Chess::Knight::ReturnType()
+void Chess::Knight::Movement(ChessGame& cg, CPoint ptChessPiece)
 {
-	return *this;
+	ChessBlock* cb = cg.GetChessBlock(ptChessPiece);
+
+	if (cb == nullptr)
+		return;
+
+	if (cb->CompareChessPiece(this) == false)
+		return;
+
+	ChessBlock& rfCB = *cg.GetChessBlock(ptChessPiece);
+
+	int tteam = ChessPiece::GetTeam();
+	int tvalue = ChessPiece::GetType();
+
+	CPoint ptMove[8]= {
+		{2,1},{-2,1},{2,-1},{-2,-1},
+		{1,2},{-1,2},{1,-2},{-1,-2}
+	};
+
+	ChessBlock* ptTmp = nullptr;
+
+	for (int i = 0; i < 8; i++) {
+		ptTmp = cg.GetChessBlock(ptChessPiece + ptMove[i]);
+		if (ptTmp == nullptr)
+			continue;
+
+		ptTmp->SetMove(tteam, 1);
+	}
+}
+
+ChessPiece* Chess::Knight::CopyChessPiece()
+{
+	return new Knight(ChessPiece::GetType(), ChessPiece::GetTeam());
 }
 
 Pawn::Pawn(int type, int team) : ChessPiece(type,team)
 {
-}
-
-Pawn Chess::Pawn::ReturnType()
-{
-	return *this;
 }
 
 void Chess::Pawn::Movement(ChessGame& cg, CPoint ptChessPiece)
@@ -135,4 +141,17 @@ void Chess::Pawn::Movement(ChessGame& cg, CPoint ptChessPiece)
 	if ((ptChessPiece.y == 1 || ptChessPiece.y == 6) && ptTmp->IsHaveChessPiece() == false)
 		ptTmp->SetMove(tteam, 1);
 
+	for (int i = -1; i <= 1; i += 2) {
+		ptTmp = cg.GetChessBlock(CPoint(Foward(ptChessPiece.x,i,0), Foward(ptChessPiece.y, 1, tteam)));
+		if (ptTmp == nullptr)
+			continue;
+
+		if (ptTmp->IsHaveChessPiece() == true)
+			ptTmp->SetMove(tteam, 1);
+	}
+}
+
+ChessPiece* Chess::Pawn::CopyChessPiece()
+{
+	return new Pawn(ChessPiece::GetType(),ChessPiece::GetTeam());
 }

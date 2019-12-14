@@ -18,8 +18,6 @@ namespace Chess {
 		int iBlockSize;
 		bool bMove;
 		int turn;
-
-		bool IsRightPoint(CPoint pt) const;
 	public:
 		ChessGame(CPoint sp = { 0,0 });
 		void PaintChessPiece(CPaintDC& dc, CPoint pt);
@@ -37,6 +35,7 @@ namespace Chess {
 		ChessBlock* GetChessBlock(CPoint pt);
 		void ClearAllMove();
 
+		bool IsRightPoint(CPoint pt) const;
 		virtual ~ChessGame();
 	};
 }
