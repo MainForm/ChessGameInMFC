@@ -27,7 +27,15 @@ namespace Chess {
 		const int type;
 		int team;
 	protected:
-		int Foward(int Num,int add, int team);
+		inline int Chess::ChessPiece::Foward(int Num, int add, int team)
+		{
+			if (team == 0)
+				Num -= add;
+			else
+				Num += add;
+
+			return Num;
+		}
 	public:
 
 		ChessPiece(int type,int team);

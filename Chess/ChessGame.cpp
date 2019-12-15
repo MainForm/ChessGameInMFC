@@ -68,6 +68,11 @@ bool Chess::ChessGame::IsCheck(int team)
 	return false;
 }
 
+bool Chess::ChessGame::IsEnPassant()
+{
+	return bEnPassant;
+}
+
 bool Chess::ChessGame::IsRightPoint(CPoint pt) const
 {
 	if ((pt.x >= 0 && pt.x < BLOCK_COUNT) && (pt.y >= 0 && pt.y < BLOCK_COUNT))
@@ -76,7 +81,7 @@ bool Chess::ChessGame::IsRightPoint(CPoint pt) const
 	return false;
 }
 
-ChessGame::ChessGame(CPoint sp) : ptStart(sp), iBlockSize(50), bMove(false), turn(0)
+ChessGame::ChessGame(CPoint sp) : ptStart(sp), iBlockSize(50), bMove(false), turn(0), bEnPassant(false)
 {
 	for (int i = 0; i < 2; i++) 
 		for(int i1 = 0;i1 < PIECE_COUNT;i1++)
@@ -109,7 +114,7 @@ void ChessGame::PaintChessBoard(CPaintDC& dc)
 	bsBlockColor[0].CreateSolidBrush(RGB(200, 200, 200));
 	bsBlockColor[1].CreateSolidBrush(RGB(255, 255, 255));
 	bsBlockColor[2].CreateSolidBrush(RGB(0, 255, 0));
-	bsBlockColor[3].CreateSolidBrush(RGB(0, 0, 255));
+	bsBlockColor[3].CreateSolidBrush(RGB(100, 190, 240));
 
 	bsOld = (CBrush*)dc.SelectObject(&bsBlockColor[0]);
 
@@ -209,6 +214,18 @@ void ChessGame::ChessBoardMessage(CPoint ptCursor)
 			return;
 
 		this->MoveChessPiece(ptCursor, ptSelect);
+
+		if (rfCB.GetChessPieceType() == PIECE_PAWN && abs(ptCursor.y - ptSelect.y) == 2) {
+			for (int i = -1; i <= 1; i += 2) {
+				ChessBlock* ptCB = GetChessBlock(CPoint(ptCursor.x + i, ptCursor.y));
+
+				if (ptCB == nullptr)
+					continue;
+
+				if(ptCB->GetChessPieceType() == PIECE_PAWN && ptCB->GetChessPieceTeam() != rfCB.GetChessPieceTeam())
+					bEnPassant = true;
+			}
+		}
 
 		if (IsCheck(!GetChessBlock(ptCursor)->GetChessPieceTeam()))
 			MessageBox(NULL, _T("Check"), _T("Test"), MB_OK);

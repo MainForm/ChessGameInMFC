@@ -4,15 +4,6 @@
 
 using namespace Chess;
 
-int Chess::ChessPiece::Foward(int Num,int add, int team)
-{
-	if (team == 0)
-		Num -= add;
-	else
-		Num += add;
-
-	return Num;
-}
 
 ChessPiece::ChessPiece(int type,int team) : type(type),team(team)
 {

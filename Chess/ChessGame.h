@@ -17,6 +17,7 @@ namespace Chess {
 		CPoint ptSelect;
 		int iBlockSize;
 		bool bMove;
+		bool bEnPassant;
 		int turn;
 	public:
 		ChessGame(CPoint sp = { 0,0 });
@@ -37,6 +38,7 @@ namespace Chess {
 		void ClearAllCheck();
 
 		bool IsCheck(int team);
+		bool IsEnPassant();
 
 		bool IsRightPoint(CPoint pt) const;
 		virtual ~ChessGame();
