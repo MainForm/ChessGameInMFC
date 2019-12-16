@@ -24,6 +24,8 @@ namespace Chess {
 	class ChessPiece
 	{
 	private:
+		ChessBlock* ptCB;
+
 		const int type;
 		int team;
 	protected:
@@ -38,9 +40,10 @@ namespace Chess {
 		}
 	public:
 
-		ChessPiece(int type,int team);
+		ChessPiece(ChessBlock* ptCB,int type,int team);
 		int GetType() const;
 		int GetTeam() const;
+		ChessBlock* GetBlock();
 
 		virtual void Movement(ChessGame& cg,CPoint ptChessPiece, SetFunc Func);
 		virtual ChessPiece* CopyChessPiece();
@@ -51,7 +54,7 @@ namespace Chess {
 	private:
 
 	public:
-		King(int type, int team);
+		King(ChessBlock* ptCB, int type, int team);
 		virtual void Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func) override;
 		virtual ChessPiece* CopyChessPiece() override;
 	};
@@ -61,7 +64,7 @@ namespace Chess {
 	private:
 
 	public:
-		Queen(int type, int team);
+		Queen(ChessBlock* ptCB, int type, int team);
 		virtual void Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func) override;
 		virtual ChessPiece* CopyChessPiece() override;
 	};
@@ -71,7 +74,7 @@ namespace Chess {
 	private:
 
 	public:
-		Rook(int type, int team);
+		Rook(ChessBlock* ptCB, int type, int team);
 		virtual void Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func) override;
 		virtual ChessPiece* CopyChessPiece() override;
 	};
@@ -81,7 +84,7 @@ namespace Chess {
 	private:
 
 	public:
-		Bishop(int type, int team);
+		Bishop(ChessBlock* ptCB, int type, int team);
 		virtual void Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func) override;
 		virtual ChessPiece* CopyChessPiece() override;
 	};
@@ -91,7 +94,7 @@ namespace Chess {
 	private:
 
 	public:
-		Knight(int type, int team);
+		Knight(ChessBlock* ptCB, int type, int team);
 
 		virtual void Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func) override;
 		virtual ChessPiece* CopyChessPiece() override;
@@ -102,7 +105,7 @@ namespace Chess {
 	private:
 
 	public:
-		Pawn(int type, int team);
+		Pawn(ChessBlock* ptCB, int type, int team);
 
 		virtual void Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func) override;
 		virtual ChessPiece* CopyChessPiece() override;

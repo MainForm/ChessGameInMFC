@@ -10,13 +10,14 @@ namespace Chess {
 	{
 	private:
 		ChessGame* ptCG;
+		const CPoint cpPos;
 		int Moveable[2];
 		std::unique_ptr<ChessPiece> cp;
 		bool bCheck;
 
 		friend ChessGame;
 	public:
-		ChessBlock(ChessGame* cg = nullptr);
+		ChessBlock(ChessGame* cg, CPoint pt);
 		ChessBlock(ChessBlock& cb);
 		int GetChessPieceType() const;
 		int GetChessPieceTeam() const;

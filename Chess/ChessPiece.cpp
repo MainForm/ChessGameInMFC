@@ -5,7 +5,7 @@
 using namespace Chess;
 
 
-ChessPiece::ChessPiece(int type,int team) : type(type),team(team)
+ChessPiece::ChessPiece(ChessBlock* ptCB, int type,int team) : type(type),team(team),ptCB(ptCB)
 {
 
 }
@@ -26,6 +26,11 @@ int Chess::ChessPiece::GetTeam() const
 	return this->team;
 }
 
+ChessBlock* Chess::ChessPiece::GetBlock()
+{
+	return this->ptCB;
+}
+
 void Chess::ChessPiece::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
 {
 	ChessBlock* cb = cg.GetChessBlock(ptChessPiece);
@@ -36,7 +41,7 @@ void Chess::ChessPiece::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Fun
 	if (cb->CompareChessPiece(this) == false)
 		return;
 
-	cb->SetMove(this->team,1);
+	//cb->SetMove(this->team,1);
 }
 
 ChessPiece* Chess::ChessPiece::CopyChessPiece()
@@ -45,7 +50,7 @@ ChessPiece* Chess::ChessPiece::CopyChessPiece()
 }
 
 
-King::King(int type, int team) : ChessPiece(type,team)
+King::King(ChessBlock* ptCB, int type, int team) : ChessPiece(ptCB,type,team)
 {
 }
 
@@ -81,11 +86,11 @@ void Chess::King::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
 
 ChessPiece* Chess::King::CopyChessPiece()
 {
-	return new King(ChessPiece::GetType(), ChessPiece::GetTeam());
+	return new King(GetBlock(), ChessPiece::GetType(), ChessPiece::GetTeam());
 }
 
 
-Queen::Queen(int type, int team) : ChessPiece(type,team)
+Queen::Queen(ChessBlock* ptCB, int type, int team) : ChessPiece(ptCB, type,team)
 {
 
 }
@@ -127,10 +132,10 @@ void Chess::Queen::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
 
 ChessPiece* Chess::Queen::CopyChessPiece()
 {
-	return new Queen(ChessPiece::GetType(), ChessPiece::GetTeam());
+	return new Queen(GetBlock(), ChessPiece::GetType(), ChessPiece::GetTeam());
 }
 
-Rook::Rook(int type, int team) : ChessPiece(type,team)
+Rook::Rook(ChessBlock* ptCB, int type, int team) : ChessPiece(ptCB, type,team)
 {
 
 }
@@ -172,10 +177,10 @@ void Chess::Rook::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
 
 ChessPiece* Chess::Rook::CopyChessPiece()
 {
-	return new Rook(ChessPiece::GetType(), ChessPiece::GetTeam());
+	return new Rook(GetBlock(), ChessPiece::GetType(), ChessPiece::GetTeam());
 }
 
-Bishop::Bishop(int type, int team) : ChessPiece(type,team)
+Bishop::Bishop(ChessBlock* ptCB, int type, int team) : ChessPiece(ptCB, type,team)
 {
 
 }
@@ -217,11 +222,11 @@ void Chess::Bishop::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
 
 ChessPiece* Chess::Bishop::CopyChessPiece()
 {
-	return new Bishop(ChessPiece::GetType(), ChessPiece::GetTeam());
+	return new Bishop(GetBlock(), ChessPiece::GetType(), ChessPiece::GetTeam());
 }
 
 
-Knight::Knight(int type, int team) : ChessPiece(type,team)
+Knight::Knight(ChessBlock* ptCB, int type, int team) : ChessPiece(ptCB, type,team)
 {
 }
 
@@ -258,10 +263,10 @@ void Chess::Knight::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
 
 ChessPiece* Chess::Knight::CopyChessPiece()
 {
-	return new Knight(ChessPiece::GetType(), ChessPiece::GetTeam());
+	return new Knight(GetBlock(), ChessPiece::GetType(), ChessPiece::GetTeam());
 }
 
-Pawn::Pawn(int type, int team) : ChessPiece(type,team)
+Pawn::Pawn(ChessBlock* ptCB, int type, int team) : ChessPiece(ptCB, type,team)
 {
 }
 
@@ -304,5 +309,5 @@ void Chess::Pawn::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
 
 ChessPiece* Chess::Pawn::CopyChessPiece()
 {
-	return new Pawn(ChessPiece::GetType(),ChessPiece::GetTeam());
+	return new Pawn(GetBlock(), ChessPiece::GetType(),ChessPiece::GetTeam());
 }

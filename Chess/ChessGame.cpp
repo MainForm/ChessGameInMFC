@@ -9,14 +9,14 @@ ChessBlock* Chess::ChessGame::GetChessBlock(CPoint pt)
 	if (!IsRightPoint(pt))
 		return nullptr;
 	
-	return &Board[pt.y][pt.x];
+	return Board[pt.y][pt.x].get();
 }
 
 void Chess::ChessGame::ClearAllMove()
 {
 	for (int iy = 0; iy < BLOCK_COUNT; iy++) {
 		for (int ix = 0; ix < BLOCK_COUNT; ix++) {
-			Board[iy][ix].ClearMove();
+			Board[iy][ix]->ClearMove();
 		}
 	}
 }
@@ -25,7 +25,7 @@ void Chess::ChessGame::ClearAllCheck()
 {
 	for (int iy = 0; iy < BLOCK_COUNT; iy++) {
 		for (int ix = 0; ix < BLOCK_COUNT; ix++) {
-			Board[iy][ix].SetCheck(0, false);
+			Board[iy][ix]->SetCheck(0, false);
 		}
 	}
 }
@@ -46,7 +46,7 @@ bool Chess::ChessGame::IsCheck(int team)
 			if (ptCB->GetChessPieceTeam() == team)
 				continue;
 
-			ptCB->MovementChessPiece(*this, ptIndex, true);
+			//ptCB->MovementChessPiece(*this, ptIndex, true);
 		}
 	}
 
@@ -90,12 +90,7 @@ ChessGame::ChessGame(CPoint sp) : ptStart(sp), iBlockSize(50), bMove(false), tur
 	CPoint ptIndex(0, 0);
 	for (ptIndex.y = 0; ptIndex.y < BLOCK_COUNT; ptIndex.y++) {
 		for (ptIndex.x = 0; ptIndex.x < BLOCK_COUNT; ptIndex.x++) {
-			ChessBlock* ptCB = GetChessBlock(ptIndex);
-
-			if (ptCB == nullptr)
-				continue;
-
-			ptCB->SetChessGame(this);
+			Board[ptIndex.y][ptIndex.x] = make_unique<ChessBlock>(this, ptIndex);
 		}
 	}
 }
@@ -147,7 +142,7 @@ void Chess::ChessGame::PaintChessPiece(CPaintDC& dc, CPoint pt)
 {
 	CBitmap* btOld;
 	CDC memDC;
-	ChessBlock& rfCB = this->Board[pt.y][pt.x];
+	ChessBlock& rfCB = *Board[pt.y][pt.x];
 
 	if (rfCB.IsHaveChessPiece() == false)
 		return;
@@ -241,13 +236,13 @@ void Chess::ChessGame::MoveChessPiece(CPoint ptTo, CPoint ptFrom)
 	if (ptTo == ptFrom)
 		return;
 
-	Board[ptTo.y][ptTo.x] = Board[ptFrom.y][ptFrom.x];
-	Board[ptFrom.y][ptFrom.x].DeleteChessPiece();
+	*Board[ptTo.y][ptTo.x] = *Board[ptFrom.y][ptFrom.x];
+	Board[ptFrom.y][ptFrom.x]->DeleteChessPiece();
 }
 
 bool ChessGame::AddChessPiece(CPoint pt, int type, int team)
 {
-	Board[pt.y][pt.x].AddChessPiece(type, team);
+	Board[pt.y][pt.x]->AddChessPiece(type, team);
 	return false;
 }
 

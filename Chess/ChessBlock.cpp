@@ -4,7 +4,7 @@
 
 using namespace Chess;
 
-ChessBlock::ChessBlock(ChessGame* cg) : cp(nullptr),ptCG(cg)
+ChessBlock::ChessBlock(ChessGame* cg,CPoint pt) : cp(nullptr),ptCG(cg),cpPos(pt)
 {
 	ZeroMemory(Moveable, sizeof(Moveable));
 }
@@ -44,23 +44,23 @@ bool ChessBlock::AddChessPiece(int type, int team)
 {
 	switch (type) {
 	case PIECE_KING:
-		this->cp = std::make_unique<King>(type,team);
+		this->cp = std::make_unique<King>(this,type,team);
 		
 		break;
 	case PIECE_QUEEN:
-		this->cp = std::make_unique<Queen>(type, team);
+		this->cp = std::make_unique<Queen>(this, type, team);
 		break;
 	case PIECE_ROOK:
-		this->cp = std::make_unique<Rook>(type, team);
+		this->cp = std::make_unique<Rook>(this, type, team);
 		break;
 	case PIECE_BISHOP:
-		this->cp = std::make_unique<Bishop>(type, team);
+		this->cp = std::make_unique<Bishop>(this, type, team);
 		break;
 	case PIECE_KNIGHT:
-		this->cp = std::make_unique<Knight>(type, team);
+		this->cp = std::make_unique<Knight>(this, type, team);
 		break;
 	case PIECE_PAWN:
-		this->cp = std::make_unique<Pawn>(type, team);
+		this->cp = std::make_unique<Pawn>(this, type, team);
 		break;
 	default:
 		return false;
@@ -79,7 +79,7 @@ bool Chess::ChessBlock::CompareChessPiece(ChessPiece* cp)
 	return (this->cp.get() == cp);
 }
 
-
+/*
 void Chess::ChessBlock::SetMove(int team,int value)
 {
 	if(team != 0 && team != 1)
@@ -105,7 +105,7 @@ void Chess::ChessBlock::SetMove(int team,int value)
 	*this = cbTmp;
 
 	Moveable[team] = value;
-}
+}*/
 
 void Chess::ChessBlock::SetCheck(int team,int value)
 {
@@ -135,6 +135,9 @@ void Chess::ChessBlock::SetChessGame(ChessGame* ptCG)
 	this->ptCG = ptCG;
 }
 
+void Chess::ChessBlock::SetMove(int team, int value) {
+
+}
 void Chess::ChessBlock::MovementChessPiece(ChessGame& cg, CPoint ptChessPiece,bool bChecking)
 {
 	if ((bool)cp == false)

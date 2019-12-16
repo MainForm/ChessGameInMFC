@@ -1,16 +1,23 @@
 #pragma once
 
+#include <array>
+#include <memory>
+
 #include "ChessBlock.h"
 #include "ChessPiece.h"
 #include "Resource.h"
 
 namespace Chess {
 
+	using namespace std;
+
 	class ChessGame
 	{
 	private:
 		static const int BLOCK_COUNT = 8;
-		ChessBlock Board[BLOCK_COUNT][BLOCK_COUNT];
+		//ChessBlock Board[BLOCK_COUNT][BLOCK_COUNT];
+
+		array<array<unique_ptr<ChessBlock>, BLOCK_COUNT>,BLOCK_COUNT> Board;
 
 		CBitmap bmChessPieces[2][PIECE_COUNT];
 		CPoint ptStart;
