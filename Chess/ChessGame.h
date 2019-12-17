@@ -15,7 +15,6 @@ namespace Chess {
 	{
 	private:
 		static const int BLOCK_COUNT = 8;
-		//ChessBlock Board[BLOCK_COUNT][BLOCK_COUNT];
 
 		array<array<unique_ptr<ChessBlock>, BLOCK_COUNT>,BLOCK_COUNT> Board;
 

@@ -11,16 +11,16 @@ namespace Chess {
 	private:
 		ChessGame* ptCG;
 		const CPoint cpPos;
-		int Moveable[2];
+		int Moveable;
 		std::unique_ptr<ChessPiece> cp;
 		bool bCheck;
-
-		friend ChessGame;
 	public:
 		ChessBlock(ChessGame* cg, CPoint pt);
 		ChessBlock(ChessBlock& cb);
 		int GetChessPieceType() const;
 		int GetChessPieceTeam() const;
+		ChessGame* GetGame() const;
+		CPoint GetPos() const;
 
 		bool IsHaveChessPiece() const;
 
@@ -29,8 +29,8 @@ namespace Chess {
 
 		bool CompareChessPiece(ChessPiece* cp);
 
-		void SetMove(int team,int value);
-		void SetCheck(int team,int value);
+		void SetMove(int value);
+		void SetCheck(int value);
 		int GetMove(int team) const;
 		bool GetCheck() const;
 
@@ -38,9 +38,7 @@ namespace Chess {
 
 		void SetChessGame(ChessGame* ptCG);
 
-		void MovementChessPiece(ChessGame& cg, CPoint ptChessPiece,bool bChecking);
-
-		ChessBlock operator=(ChessBlock& cb);
+		void MovementChessPiece(bool bChecking);
 	};
 
 }

@@ -4,16 +4,14 @@
 
 using namespace Chess;
 
-ChessBlock::ChessBlock(ChessGame* cg,CPoint pt) : cp(nullptr),ptCG(cg),cpPos(pt)
+ChessBlock::ChessBlock(ChessGame* cg, CPoint pt) : cp(nullptr), ptCG(cg), cpPos(pt),Moveable(false),bCheck(false)
 {
-	ZeroMemory(Moveable, sizeof(Moveable));
 }
 
-ChessBlock::ChessBlock(ChessBlock& cb) : cp(nullptr),ptCG(cb.ptCG)
+ChessBlock::ChessBlock(ChessBlock& cb) : cp(nullptr), ptCG(cb.ptCG), cpPos(cb.cpPos), Moveable(false), bCheck(false)
 {
 	if(cb.cp != nullptr)
 		cp.reset(cb.cp->CopyChessPiece());
-	ZeroMemory(Moveable, sizeof(Moveable));
 }
 
 int Chess::ChessBlock::GetChessPieceType() const
@@ -30,6 +28,16 @@ int Chess::ChessBlock::GetChessPieceTeam() const
 		return -1;
 
 	return this->cp->GetTeam();
+}
+
+CPoint Chess::ChessBlock::GetPos() const
+{
+	return cpPos;
+}
+
+ChessGame* Chess::ChessBlock::GetGame() const
+{
+	return this->ptCG;
 }
 
 bool Chess::ChessBlock::IsHaveChessPiece() const
@@ -79,35 +87,34 @@ bool Chess::ChessBlock::CompareChessPiece(ChessPiece* cp)
 	return (this->cp.get() == cp);
 }
 
-/*
-void Chess::ChessBlock::SetMove(int team,int value)
+
+void Chess::ChessBlock::SetMove(int value)
 {
-	if(team != 0 && team != 1)
-		return;
+	int ttype = GetChessPieceType();
+	int tteam = GetChessPieceTeam();
 
-	if (team == cp->GetTeam())
-		return;
-
-	ChessBlock cbTmp = *this;
-
-	*this = *ptCG->GetChessBlock(ptCG->GetSelectedPoint());
-
-	ChessBlock& rfCBTmp = *(ptCG->GetChessBlock(ptCG->GetSelectedPoint()));
-	*ptCG->GetChessBlock(ptCG->GetSelectedPoint()) = ChessBlock(this->ptCG);
-
-	if (ptCG->IsCheck(team)) {
-		*ptCG->GetChessBlock(ptCG->GetSelectedPoint()) = *this;
-		*this = cbTmp;
+	if (value == 3) {
+		Moveable = value;
 		return;
 	}
 
-	*ptCG->GetChessBlock(ptCG->GetSelectedPoint()) = *this;
-	*this = cbTmp;
+	if (ptCG->GetChessBlock(ptCG->GetSelectedPoint())->GetChessPieceTeam() == tteam)
+		return;
 
-	Moveable[team] = value;
-}*/
+	ptCG->MoveChessPiece(cpPos, ptCG->GetSelectedPoint());
 
-void Chess::ChessBlock::SetCheck(int team,int value)
+	if (ptCG->IsCheck(!tteam)) {
+		ptCG->MoveChessPiece(ptCG->GetSelectedPoint(),cpPos);
+		ptCG->AddChessPiece(cpPos, ttype, tteam);
+		return;
+	}
+	ptCG->MoveChessPiece(ptCG->GetSelectedPoint(), cpPos);
+	ptCG->AddChessPiece(cpPos, ttype, tteam);
+
+	Moveable = value;
+}
+
+void Chess::ChessBlock::SetCheck(int value)
 {
 	bCheck = value;
 }
@@ -115,9 +122,9 @@ void Chess::ChessBlock::SetCheck(int team,int value)
 int Chess::ChessBlock::GetMove(int team) const
 {
 	if (team == 0 || team == 1)
-		return Moveable[team];
+		return Moveable;
 	else
-		return 0;
+		return -1;
 }
 
 bool Chess::ChessBlock::GetCheck() const
@@ -127,7 +134,7 @@ bool Chess::ChessBlock::GetCheck() const
 
 void Chess::ChessBlock::ClearMove()
 {
-	ZeroMemory(Moveable, sizeof(Moveable));
+	Moveable = false;
 }
 
 void Chess::ChessBlock::SetChessGame(ChessGame* ptCG)
@@ -135,36 +142,13 @@ void Chess::ChessBlock::SetChessGame(ChessGame* ptCG)
 	this->ptCG = ptCG;
 }
 
-void Chess::ChessBlock::SetMove(int team, int value) {
-
-}
-void Chess::ChessBlock::MovementChessPiece(ChessGame& cg, CPoint ptChessPiece,bool bChecking)
+void Chess::ChessBlock::MovementChessPiece(bool bChecking)
 {
 	if ((bool)cp == false)
 		return;
 
-	if (cg.IsRightPoint(ptChessPiece) == false)
-		return;
-
 	if (bChecking == false)
-		cp->Movement(cg, ptChessPiece, &ChessBlock::SetMove);
+		cp->Movement(&ChessBlock::SetMove);
 	else
-		cp->Movement(cg, ptChessPiece, &ChessBlock::SetCheck);
-}
-
-ChessBlock Chess::ChessBlock::operator=(ChessBlock& cb)
-{
-	this->ptCG = cb.ptCG;
-
-	if (cb.cp == false) {
-		cp.release();
-		return *this;
-	}
-
-	if ((bool)this->cp == true)
-		cp.release();
-
-	cp.reset(cb.cp->CopyChessPiece());
-
-	return *this;
+		cp->Movement(&ChessBlock::SetCheck);
 }

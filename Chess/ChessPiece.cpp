@@ -4,6 +4,18 @@
 
 using namespace Chess;
 
+CPoint ChessPiece::Foward(CPoint pt, int team)
+{
+	CPoint cpTemp = GetBlock()->GetPos();
+
+	cpTemp.x += pt.x;
+	if (team == TEAM_WHITE)
+		cpTemp.y -= pt.y;
+	else
+		cpTemp.y += pt.y;
+
+	return cpTemp;
+}
 
 ChessPiece::ChessPiece(ChessBlock* ptCB, int type,int team) : type(type),team(team),ptCB(ptCB)
 {
@@ -31,17 +43,9 @@ ChessBlock* Chess::ChessPiece::GetBlock()
 	return this->ptCB;
 }
 
-void Chess::ChessPiece::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
+void Chess::ChessPiece::Movement( SetFunc Func)
 {
-	ChessBlock* cb = cg.GetChessBlock(ptChessPiece);
 
-	if (cb == nullptr)
-		return;
-
-	if (cb->CompareChessPiece(this) == false)
-		return;
-
-	//cb->SetMove(this->team,1);
 }
 
 ChessPiece* Chess::ChessPiece::CopyChessPiece()
@@ -54,20 +58,13 @@ King::King(ChessBlock* ptCB, int type, int team) : ChessPiece(ptCB,type,team)
 {
 }
 
-void Chess::King::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
+void Chess::King::Movement(SetFunc Func)
 {
-	ChessBlock* cb = cg.GetChessBlock(ptChessPiece);
-
-	if (cb == nullptr)
-		return;
-
-	if (cb->CompareChessPiece(this) == false)
-		return;
-
-	ChessBlock& rfCB = *cg.GetChessBlock(ptChessPiece);
-
 	int tteam = ChessPiece::GetTeam();
 	int tvalue = ChessPiece::GetType();
+
+	ChessGame& cg = *GetBlock()->GetGame();
+	CPoint ptPos = GetBlock()->GetPos();
 
 	CPoint ptMove[8] = {
 		{1,0},{-1,0},{0,1},{0,-1},{1,1},{1,-1},{-1,1},{-1,-1}
@@ -76,11 +73,11 @@ void Chess::King::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
 	ChessBlock* ptTmp = nullptr;
 
 	for (int i = 0; i < 8; i++) {
-		ptTmp = cg.GetChessBlock(ptChessPiece + ptMove[i]);
+		ptTmp = cg.GetChessBlock(ptPos + ptMove[i]);
 		if (ptTmp == nullptr)
 			continue;
 
-		(ptTmp->*Func)(tteam, 1);
+		(ptTmp->*Func)(1);
 	}
 }
 
@@ -95,20 +92,13 @@ Queen::Queen(ChessBlock* ptCB, int type, int team) : ChessPiece(ptCB, type,team)
 
 }
 
-void Chess::Queen::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
+void Chess::Queen::Movement(SetFunc Func)
 {
-	ChessBlock* cb = cg.GetChessBlock(ptChessPiece);
-
-	if (cb == nullptr)
-		return;
-
-	if (cb->CompareChessPiece(this) == false)
-		return;
-
-	ChessBlock& rfCB = *cg.GetChessBlock(ptChessPiece);
-
 	int tteam = ChessPiece::GetTeam();
 	int tvalue = ChessPiece::GetType();
+
+	ChessGame& cg = *GetBlock()->GetGame();
+	CPoint ptPos = GetBlock()->GetPos();
 
 	CPoint ptMove[8] = {
 		{1,0},{-1,0},{0,1},{0,-1},{1,1},{1,-1},{-1,1},{-1,-1}
@@ -117,12 +107,12 @@ void Chess::Queen::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
 	ChessBlock* ptTmp = nullptr;
 
 	for (int i = 0; i < 8; i++) {
-		for (CPoint ptIndex = ptChessPiece + ptMove[i]; cg.IsRightPoint(ptIndex); ptIndex += ptMove[i]) {
+		for (CPoint ptIndex = ptPos + ptMove[i]; cg.IsRightPoint(ptIndex); ptIndex += ptMove[i]) {
 			ptTmp = cg.GetChessBlock(ptIndex);
 			if (ptTmp == nullptr)
 				break;
 
-			(ptTmp->*Func)(tteam, 1);
+			(ptTmp->*Func)( 1);
 
 			if (ptTmp->IsHaveChessPiece() == true)
 				break;
@@ -140,20 +130,14 @@ Rook::Rook(ChessBlock* ptCB, int type, int team) : ChessPiece(ptCB, type,team)
 
 }
 
-void Chess::Rook::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
+void Chess::Rook::Movement( SetFunc Func)
 {
-	ChessBlock* cb = cg.GetChessBlock(ptChessPiece);
-
-	if (cb == nullptr)
-		return;
-
-	if (cb->CompareChessPiece(this) == false)
-		return;
-
-	ChessBlock& rfCB = *cg.GetChessBlock(ptChessPiece);
-
 	int tteam = ChessPiece::GetTeam();
 	int tvalue = ChessPiece::GetType();
+
+	ChessGame& cg = *GetBlock()->GetGame();
+	CPoint ptPos = GetBlock()->GetPos();
+
 
 	CPoint ptMove[4] = {
 		{1,0},{-1,0},{0,1},{0,-1}
@@ -162,12 +146,12 @@ void Chess::Rook::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
 	ChessBlock* ptTmp = nullptr;
 
 	for (int i = 0; i < 4; i++) {
-		for (CPoint ptIndex = ptChessPiece + ptMove[i]; cg.IsRightPoint(ptIndex); ptIndex += ptMove[i]) {
+		for (CPoint ptIndex = ptPos + ptMove[i]; cg.IsRightPoint(ptIndex); ptIndex += ptMove[i]) {
 			ptTmp = cg.GetChessBlock(ptIndex);
 			if (ptTmp == nullptr)
 				break;
 
-			(ptTmp->*Func)(tteam, 1);
+			(ptTmp->*Func)( 1);
 
 			if (ptTmp->IsHaveChessPiece() == true)
 				break;
@@ -185,20 +169,14 @@ Bishop::Bishop(ChessBlock* ptCB, int type, int team) : ChessPiece(ptCB, type,tea
 
 }
 
-void Chess::Bishop::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
+void Chess::Bishop::Movement( SetFunc Func)
 {
-	ChessBlock* cb = cg.GetChessBlock(ptChessPiece);
-
-	if (cb == nullptr)
-		return;
-
-	if (cb->CompareChessPiece(this) == false)
-		return;
-
-	ChessBlock& rfCB = *cg.GetChessBlock(ptChessPiece);
-
 	int tteam = ChessPiece::GetTeam();
 	int tvalue = ChessPiece::GetType();
+
+	ChessGame& cg = *GetBlock()->GetGame();
+	CPoint ptPos = GetBlock()->GetPos();
+
 
 	CPoint ptMove[4] = { 
 		{1,1},{1,-1},{-1,1},{-1,-1}
@@ -207,12 +185,12 @@ void Chess::Bishop::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
 	ChessBlock* ptTmp = nullptr;
 
 	for (int i = 0; i < 4; i++) {
-		for (CPoint ptIndex = ptChessPiece + ptMove[i]; cg.IsRightPoint(ptIndex); ptIndex += ptMove[i]) {
+		for (CPoint ptIndex = ptPos + ptMove[i]; cg.IsRightPoint(ptIndex); ptIndex += ptMove[i]) {
 			ptTmp = cg.GetChessBlock(ptIndex);
 			if (ptTmp == nullptr)
 				break;
 
-			(ptTmp->*Func)(tteam, 1);
+			(ptTmp->*Func)( 1);
 
 			if (ptTmp->IsHaveChessPiece() == true)
 				break;
@@ -230,20 +208,14 @@ Knight::Knight(ChessBlock* ptCB, int type, int team) : ChessPiece(ptCB, type,tea
 {
 }
 
-void Chess::Knight::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
+void Chess::Knight::Movement(SetFunc Func)
 {
-	ChessBlock* cb = cg.GetChessBlock(ptChessPiece);
-
-	if (cb == nullptr)
-		return;
-
-	if (cb->CompareChessPiece(this) == false)
-		return;
-
-	ChessBlock& rfCB = *cg.GetChessBlock(ptChessPiece);
-
 	int tteam = ChessPiece::GetTeam();
 	int tvalue = ChessPiece::GetType();
+
+	ChessGame& cg = *GetBlock()->GetGame();
+	CPoint ptPos = GetBlock()->GetPos();
+
 
 	CPoint ptMove[8]= {
 		{2,1},{-2,1},{2,-1},{-2,-1},
@@ -253,11 +225,11 @@ void Chess::Knight::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
 	ChessBlock* ptTmp = nullptr;
 
 	for (int i = 0; i < 8; i++) {
-		ptTmp = cg.GetChessBlock(ptChessPiece + ptMove[i]);
+		ptTmp = cg.GetChessBlock(ptPos + ptMove[i]);
 		if (ptTmp == nullptr)
 			continue;
 
-		(ptTmp->*Func)(tteam, 1);
+		(ptTmp->*Func)( 1);
 	}
 }
 
@@ -270,40 +242,34 @@ Pawn::Pawn(ChessBlock* ptCB, int type, int team) : ChessPiece(ptCB, type,team)
 {
 }
 
-void Chess::Pawn::Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func)
+void Chess::Pawn::Movement( SetFunc Func)
 {
-	ChessBlock* cb = cg.GetChessBlock(ptChessPiece);
-
-	if (cb == nullptr)
-		return;
-
-	if (cb->CompareChessPiece(this) == false)
-		return;
-
-	ChessBlock& rfCB = *cg.GetChessBlock(ptChessPiece);
-
 	int tteam = ChessPiece::GetTeam();
 	int tvalue = ChessPiece::GetType();
-	
-	ChessBlock* ptTmp = cg.GetChessBlock(CPoint(ptChessPiece.x, Foward(ptChessPiece.y, 1, tteam)));
+
+	ChessGame& cg = *GetBlock()->GetGame();
+	CPoint ptPos = GetBlock()->GetPos();
+
+
+	ChessBlock* ptTmp = cg.GetChessBlock(Foward(CPoint(0,1),tteam));
 	
 	if(ptTmp != nullptr &&ptTmp->IsHaveChessPiece() == false)
-		(ptTmp->*Func)(tteam, 1);
+		(ptTmp->*Func)( 1);
 	
 	
-	ptTmp = cg.GetChessBlock(CPoint(ptChessPiece.x, Foward(ptChessPiece.y, 2, tteam)));
+	ptTmp = cg.GetChessBlock(Foward(CPoint(0, 2), tteam));
 
-	if (ptTmp != nullptr && (ptChessPiece.y == 1 || ptChessPiece.y == 6) && ptTmp->IsHaveChessPiece() == false)
-		(ptTmp->*Func)(tteam, 1);
+	if (ptTmp != nullptr && (ptPos.y == 1 || ptPos.y == 6) && ptTmp->IsHaveChessPiece() == false)
+		(ptTmp->*Func)(1);
 	
 
 	for (int i = -1; i <= 1; i += 2) {
-		ptTmp = cg.GetChessBlock(CPoint(Foward(ptChessPiece.x,i,0), Foward(ptChessPiece.y, 1, tteam)));
+		ptTmp = cg.GetChessBlock(Foward(CPoint(i,1),tteam));
 		if (ptTmp == nullptr)
 			continue;
 
 		if (ptTmp->IsHaveChessPiece() == true)
-			(ptTmp->*Func)(tteam, 1);
+			(ptTmp->*Func)(1);
 	}
 }
 

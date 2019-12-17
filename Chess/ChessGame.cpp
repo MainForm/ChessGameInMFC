@@ -25,7 +25,7 @@ void Chess::ChessGame::ClearAllCheck()
 {
 	for (int iy = 0; iy < BLOCK_COUNT; iy++) {
 		for (int ix = 0; ix < BLOCK_COUNT; ix++) {
-			Board[iy][ix]->SetCheck(0, false);
+			Board[iy][ix]->SetCheck(false);
 		}
 	}
 }
@@ -46,7 +46,7 @@ bool Chess::ChessGame::IsCheck(int team)
 			if (ptCB->GetChessPieceTeam() == team)
 				continue;
 
-			//ptCB->MovementChessPiece(*this, ptIndex, true);
+			ptCB->MovementChessPiece(true);
 		}
 	}
 
@@ -195,11 +195,12 @@ void ChessGame::ChessBoardMessage(CPoint ptCursor)
 
 		this->ptSelect = ptCursor;
 
-		rfCB.MovementChessPiece(*this, ptCursor,false);
+		rfCB.MovementChessPiece(false);
 
-		rfCB.Moveable[rfCB.GetChessPieceTeam()] = 3;
+		rfCB.SetMove(3);
 		bMove = true;
 	}
+
 	else {
 		if (ptCursor == ptSelect) {
 			ClearAllMove();
@@ -236,8 +237,12 @@ void Chess::ChessGame::MoveChessPiece(CPoint ptTo, CPoint ptFrom)
 	if (ptTo == ptFrom)
 		return;
 
-	*Board[ptTo.y][ptTo.x] = *Board[ptFrom.y][ptFrom.x];
-	Board[ptFrom.y][ptFrom.x]->DeleteChessPiece();
+	ChessBlock* cbTo = GetChessBlock(ptTo);
+	ChessBlock* cbFrom = GetChessBlock(ptFrom);
+
+	cbTo->DeleteChessPiece();
+	cbTo->AddChessPiece(cbFrom->GetChessPieceType(), cbFrom->GetChessPieceTeam());
+	cbFrom->DeleteChessPiece();
 }
 
 bool ChessGame::AddChessPiece(CPoint pt, int type, int team)

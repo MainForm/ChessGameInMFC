@@ -1,8 +1,8 @@
 #pragma once
 
 namespace Chess {
-	const int TEAM_BLACK = 0;
-	const int TEAM_WHITE = 1;
+	const int TEAM_BLACK = 1;
+	const int TEAM_WHITE = 0;
 	
 	const int PIECE_KING = 0;
 	const int PIECE_QUEEN = 1;
@@ -19,7 +19,7 @@ namespace Chess {
 	class ChessGame;
 	class ChessBlock;
 
-	using SetFunc = void (ChessBlock::*)(int, int);
+	using SetFunc = void (ChessBlock::*)(int);
 
 	class ChessPiece
 	{
@@ -29,15 +29,7 @@ namespace Chess {
 		const int type;
 		int team;
 	protected:
-		inline int Chess::ChessPiece::Foward(int Num, int add, int team)
-		{
-			if (team == 0)
-				Num -= add;
-			else
-				Num += add;
-
-			return Num;
-		}
+		CPoint Foward(CPoint pt, int team);
 	public:
 
 		ChessPiece(ChessBlock* ptCB,int type,int team);
@@ -45,7 +37,7 @@ namespace Chess {
 		int GetTeam() const;
 		ChessBlock* GetBlock();
 
-		virtual void Movement(ChessGame& cg,CPoint ptChessPiece, SetFunc Func);
+		virtual void Movement(SetFunc Func);
 		virtual ChessPiece* CopyChessPiece();
 	};
 
@@ -55,7 +47,7 @@ namespace Chess {
 
 	public:
 		King(ChessBlock* ptCB, int type, int team);
-		virtual void Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func) override;
+		virtual void Movement(SetFunc Func) override;
 		virtual ChessPiece* CopyChessPiece() override;
 	};
 
@@ -65,7 +57,7 @@ namespace Chess {
 
 	public:
 		Queen(ChessBlock* ptCB, int type, int team);
-		virtual void Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func) override;
+		virtual void Movement( SetFunc Func) override;
 		virtual ChessPiece* CopyChessPiece() override;
 	};
 
@@ -75,7 +67,7 @@ namespace Chess {
 
 	public:
 		Rook(ChessBlock* ptCB, int type, int team);
-		virtual void Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func) override;
+		virtual void Movement( SetFunc Func) override;
 		virtual ChessPiece* CopyChessPiece() override;
 	};
 
@@ -85,7 +77,7 @@ namespace Chess {
 
 	public:
 		Bishop(ChessBlock* ptCB, int type, int team);
-		virtual void Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func) override;
+		virtual void Movement( SetFunc Func) override;
 		virtual ChessPiece* CopyChessPiece() override;
 	};
 
@@ -96,7 +88,7 @@ namespace Chess {
 	public:
 		Knight(ChessBlock* ptCB, int type, int team);
 
-		virtual void Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func) override;
+		virtual void Movement( SetFunc Func) override;
 		virtual ChessPiece* CopyChessPiece() override;
 	};
 
@@ -107,7 +99,7 @@ namespace Chess {
 	public:
 		Pawn(ChessBlock* ptCB, int type, int team);
 
-		virtual void Movement(ChessGame& cg, CPoint ptChessPiece, SetFunc Func) override;
+		virtual void Movement(SetFunc Func) override;
 		virtual ChessPiece* CopyChessPiece() override;
 	};
 }
