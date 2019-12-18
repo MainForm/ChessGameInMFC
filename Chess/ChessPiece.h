@@ -28,9 +28,8 @@ namespace Chess {
 
 		const int type;
 		int team;
-	protected:
-		CPoint Foward(CPoint pt, int team);
 	public:
+		CPoint Foward(CPoint pt, int team);
 
 		ChessPiece(ChessBlock* ptCB,int type,int team);
 		int GetType() const;
@@ -95,7 +94,7 @@ namespace Chess {
 	class Pawn : public ChessPiece
 	{
 	private:
-
+		bool bEnPassant;
 	public:
 		Pawn(ChessBlock* ptCB, int type, int team);
 

@@ -90,20 +90,22 @@ bool Chess::ChessBlock::CompareChessPiece(ChessPiece* cp)
 
 void Chess::ChessBlock::SetMove(int value)
 {
+	ChessBlock* ptCB = ptCG->GetChessBlock(ptCG->GetSelectedPoint());
 	int ttype = GetChessPieceType();
 	int tteam = GetChessPieceTeam();
 
-	if (value == 3) {
+	
+	if (value == 3 || value == 2) {
 		Moveable = value;
 		return;
 	}
 
-	if (ptCG->GetChessBlock(ptCG->GetSelectedPoint())->GetChessPieceTeam() == tteam)
+	if (ptCB->GetChessPieceTeam() == GetChessPieceTeam())
 		return;
 
 	ptCG->MoveChessPiece(cpPos, ptCG->GetSelectedPoint());
 
-	if (ptCG->IsCheck(!tteam)) {
+	if (ptCG->IsCheck(GetChessPieceTeam())) {
 		ptCG->MoveChessPiece(ptCG->GetSelectedPoint(),cpPos);
 		ptCG->AddChessPiece(cpPos, ttype, tteam);
 		return;
@@ -119,12 +121,9 @@ void Chess::ChessBlock::SetCheck(int value)
 	bCheck = value;
 }
 
-int Chess::ChessBlock::GetMove(int team) const
+int Chess::ChessBlock::GetMove() const
 {
-	if (team == 0 || team == 1)
-		return Moveable;
-	else
-		return -1;
+	return Moveable;
 }
 
 bool Chess::ChessBlock::GetCheck() const

@@ -44,7 +44,9 @@ namespace Chess {
 		void ClearAllCheck();
 
 		bool IsCheck(int team);
-		bool IsEnPassant();
+
+		void IdentifyEnPassant(CPoint cpTo,CPoint cpFrom);
+		bool GetEnPassant();
 
 		bool IsRightPoint(CPoint pt) const;
 		virtual ~ChessGame();

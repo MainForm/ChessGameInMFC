@@ -58,10 +58,8 @@ void CChildView::OnPaint()
 	this->Chess->PaintChessBoard(dc);
 	this->Chess->PaintChessPieces(dc);
 
-	CString csEnPassent;
 
-	csEnPassent.Format(_T("EnPassen : %d"), this->Chess->IsEnPassant());
-	dc.TextOutW(500, 10, csEnPassent);
+	//dc.TextOutW(500, 10, csEnPassent);
 }
 
 

@@ -31,7 +31,7 @@ namespace Chess {
 
 		void SetMove(int value);
 		void SetCheck(int value);
-		int GetMove(int team) const;
+		int GetMove() const;
 		bool GetCheck() const;
 
 		void ClearMove();
