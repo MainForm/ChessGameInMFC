@@ -53,7 +53,6 @@ bool ChessBlock::AddChessPiece(int type, int team)
 	switch (type) {
 	case PIECE_KING:
 		this->cp = std::make_unique<King>(this,type,team);
-		
 		break;
 	case PIECE_QUEEN:
 		this->cp = std::make_unique<Queen>(this, type, team);
@@ -82,6 +81,23 @@ void Chess::ChessBlock::DeleteChessPiece()
 	cp.release();
 }
 
+bool Chess::ChessBlock::MoveChessPiece(CPoint cpTo)
+{
+	if ((bool)this->cp == false)
+		return false;
+
+	if(ptCG->IsRightPoint(cpTo) == false)
+		return false;
+
+	ChessBlock* ptTo = ptCG->GetChessBlock(cpTo);
+
+	ptTo->DeleteChessPiece();
+	ptTo->AddChessPiece(GetChessPieceType(), GetChessPieceTeam());
+	DeleteChessPiece();
+
+	return true;
+}
+
 bool Chess::ChessBlock::CompareChessPiece(ChessPiece* cp)
 {
 	return (this->cp.get() == cp);
@@ -103,14 +119,16 @@ void Chess::ChessBlock::SetMove(int value)
 	if (ptCB->GetChessPieceTeam() == GetChessPieceTeam())
 		return;
 
-	ptCG->MoveChessPiece(cpPos, ptCG->GetSelectedPoint());
+	ptCB->MoveChessPiece(cpPos);
 
 	if (ptCG->IsCheck(GetChessPieceTeam())) {
-		ptCG->MoveChessPiece(ptCG->GetSelectedPoint(),cpPos);
+		MoveChessPiece(ptCB->cpPos);
 		ptCG->AddChessPiece(cpPos, ttype, tteam);
+
+		
 		return;
 	}
-	ptCG->MoveChessPiece(ptCG->GetSelectedPoint(), cpPos);
+	MoveChessPiece(ptCB->cpPos);
 	ptCG->AddChessPiece(cpPos, ttype, tteam);
 
 	Moveable = value;

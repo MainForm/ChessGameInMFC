@@ -43,9 +43,12 @@ namespace Chess {
 	class King : public ChessPiece
 	{
 	private:
-
+		bool bMove;
 	public:
 		King(ChessBlock* ptCB, int type, int team);
+
+		void SetMove(bool bMove);
+
 		virtual void Movement(SetFunc Func) override;
 		virtual ChessPiece* CopyChessPiece() override;
 	};
@@ -63,9 +66,12 @@ namespace Chess {
 	class Rook : public ChessPiece
 	{
 	private:
-
+		bool bMove;
 	public:
 		Rook(ChessBlock* ptCB, int type, int team);
+
+		void SetMove(bool bMove);
+
 		virtual void Movement( SetFunc Func) override;
 		virtual ChessPiece* CopyChessPiece() override;
 	};
@@ -94,7 +100,7 @@ namespace Chess {
 	class Pawn : public ChessPiece
 	{
 	private:
-		bool bEnPassant;
+
 	public:
 		Pawn(ChessBlock* ptCB, int type, int team);
 

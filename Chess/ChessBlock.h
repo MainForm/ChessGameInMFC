@@ -26,6 +26,7 @@ namespace Chess {
 
 		bool AddChessPiece(int type,int team);
 		void DeleteChessPiece();
+		bool MoveChessPiece(CPoint cpTo);
 
 		bool CompareChessPiece(ChessPiece* cp);
 

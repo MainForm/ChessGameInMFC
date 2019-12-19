@@ -207,7 +207,7 @@ void ChessGame::ChessBoardMessage(CPoint ptCursor)
 		if (rfCB.GetMove() == 0)
 			return;
 
-		this->MoveChessPiece(ptCursor, ptSelect);
+		GetChessBlock(ptSelect)->MoveChessPiece(ptCursor);
 
 		IdentifyEnPassant(ptCursor, this->ptSelect);
 
@@ -249,19 +249,6 @@ void Chess::ChessGame::IdentifyEnPassant(CPoint cpTo, CPoint cpFrom)
 bool Chess::ChessGame::GetEnPassant()
 {
 	return bEnPassant;
-}
-
-void Chess::ChessGame::MoveChessPiece(CPoint ptTo, CPoint ptFrom)
-{
-	if (ptTo == ptFrom)
-		return;
-
-	ChessBlock* cbTo = GetChessBlock(ptTo);
-	ChessBlock* cbFrom = GetChessBlock(ptFrom);
-
-	cbTo->DeleteChessPiece();
-	cbTo->AddChessPiece(cbFrom->GetChessPieceType(), cbFrom->GetChessPieceTeam());
-	cbFrom->DeleteChessPiece();
 }
 
 bool ChessGame::AddChessPiece(CPoint pt, int type, int team)
