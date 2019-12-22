@@ -21,6 +21,12 @@ namespace Chess {
 
 	using SetFunc = void (ChessBlock::*)(int);
 
+	interface InterfaceMoved {
+	public:
+		virtual bool IsMoved() = 0;
+		virtual void  SetMove(bool bMove) = 0;
+	};
+
 	class ChessPiece
 	{
 	private:
@@ -40,17 +46,18 @@ namespace Chess {
 		virtual ChessPiece* CopyChessPiece();
 	};
 
-	class King : public ChessPiece
+	class King : public ChessPiece,public InterfaceMoved
 	{
 	private:
 		bool bMove;
 	public:
 		King(ChessBlock* ptCB, int type, int team);
 
-		void SetMove(bool bMove);
-
 		virtual void Movement(SetFunc Func) override;
 		virtual ChessPiece* CopyChessPiece() override;
+
+		virtual bool IsMoved();
+		virtual void  SetMove(bool bMove);
 	};
 
 	class Queen : public ChessPiece
@@ -63,17 +70,18 @@ namespace Chess {
 		virtual ChessPiece* CopyChessPiece() override;
 	};
 
-	class Rook : public ChessPiece
+	class Rook : public ChessPiece, public InterfaceMoved
 	{
 	private:
 		bool bMove;
 	public:
 		Rook(ChessBlock* ptCB, int type, int team);
 
-		void SetMove(bool bMove);
-
 		virtual void Movement( SetFunc Func) override;
 		virtual ChessPiece* CopyChessPiece() override;
+
+		virtual bool IsMoved();
+		virtual void  SetMove(bool bMove);
 	};
 
 	class Bishop : public ChessPiece

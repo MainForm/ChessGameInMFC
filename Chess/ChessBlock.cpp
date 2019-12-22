@@ -81,7 +81,7 @@ void Chess::ChessBlock::DeleteChessPiece()
 	cp.release();
 }
 
-bool Chess::ChessBlock::MoveChessPiece(CPoint cpTo)
+bool Chess::ChessBlock::MoveChessPiece(CPoint cpTo, bool bCheck)
 {
 	if ((bool)this->cp == false)
 		return false;
@@ -94,6 +94,14 @@ bool Chess::ChessBlock::MoveChessPiece(CPoint cpTo)
 	ptTo->DeleteChessPiece();
 	ptTo->AddChessPiece(GetChessPieceType(), GetChessPieceTeam());
 	DeleteChessPiece();
+
+	if (bCheck == false) {
+		InterfaceMoved* ifMoved = nullptr;
+
+		if (ifMoved = dynamic_cast<InterfaceMoved*>(ptTo->cp.get())) {
+			ifMoved->SetMove(true);
+		}
+	}
 
 	return true;
 }
@@ -119,16 +127,16 @@ void Chess::ChessBlock::SetMove(int value)
 	if (ptCB->GetChessPieceTeam() == GetChessPieceTeam())
 		return;
 
-	ptCB->MoveChessPiece(cpPos);
+	ptCB->MoveChessPiece(cpPos,true);
 
 	if (ptCG->IsCheck(GetChessPieceTeam())) {
-		MoveChessPiece(ptCB->cpPos);
+		MoveChessPiece(ptCB->cpPos, true);
 		ptCG->AddChessPiece(cpPos, ttype, tteam);
 
 		
 		return;
 	}
-	MoveChessPiece(ptCB->cpPos);
+	MoveChessPiece(ptCB->cpPos, true);
 	ptCG->AddChessPiece(cpPos, ttype, tteam);
 
 	Moveable = value;

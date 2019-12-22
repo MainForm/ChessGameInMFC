@@ -58,6 +58,11 @@ King::King(ChessBlock* ptCB, int type, int team) : ChessPiece(ptCB,type,team),bM
 {
 }
 
+bool Chess::King::IsMoved()
+{
+	return bMove;
+}
+
 void Chess::King::SetMove(bool bMove)
 {
 	this->bMove = bMove;
@@ -128,6 +133,11 @@ ChessPiece* Chess::Queen::CopyChessPiece()
 Rook::Rook(ChessBlock* ptCB, int type, int team) : ChessPiece(ptCB, type, team), bMove(false)
 {
 
+}
+
+bool Chess::Rook::IsMoved()
+{
+	return bMove;
 }
 
 void Chess::Rook::SetMove(bool bMove)
