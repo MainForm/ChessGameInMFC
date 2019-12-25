@@ -22,15 +22,13 @@ CChildView::~CChildView()
 {
 }
 
-
 BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_WM_PAINT()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_CREATE()
 	ON_WM_DESTROY()
+	ON_WM_GETMINMAXINFO()
 END_MESSAGE_MAP()
-
-
 
 // CChildView 메시지 처리기
 
@@ -57,9 +55,6 @@ void CChildView::OnPaint()
 
 	this->Chess->PaintChessBoard(dc);
 	this->Chess->PaintChessPieces(dc);
-
-
-	//dc.TextOutW(500, 10, csEnPassent);
 }
 
 
@@ -94,4 +89,12 @@ void CChildView::OnDestroy()
 	CWnd::OnDestroy();
 
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+}
+
+
+void CChildView::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	CWnd::OnGetMinMaxInfo(lpMMI);
 }

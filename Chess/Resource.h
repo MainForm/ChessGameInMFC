@@ -7,28 +7,31 @@
 #define IDP_SOCKETS_INIT_FAILED         104
 #define IDR_MAINFRAME                   128
 #define IDR_ChessTYPE                   130
-
 #define IDB_KING_WHITE                  200
-#define IDB_KING_BLACK					210
 #define IDB_QUEEN_WHITE                 201
-#define IDB_QUEEN_BLACK                 211
 #define IDB_ROOK_WHITE                  202
-#define IDB_ROOK_BLACK                  212
 #define IDB_BISHOP_WHITE                203
-#define IDB_BISHOP_BLACK                213
 #define IDB_KNIGHT_WHITE                204
-#define IDB_KNIGHT_BLACK                214
 #define IDB_PAWN_WHITE                  205
+#define IDB_KING_BLACK                  210
+#define IDB_QUEEN_BLACK                 211
+#define IDB_ROOK_BLACK                  212
+#define IDB_BISHOP_BLACK                213
+#define IDB_KNIGHT_BLACK                214
 #define IDB_PAWN_BLACK                  215
-
+#define IDD_PAWN_PROMOTION              322
+#define IDC_QUEEN                       1000
+#define IDC_ROOK                        1001
+#define IDC_BISHOP                      1002
+#define IDC_KNIGHT                      1003
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        322
+#define _APS_NEXT_RESOURCE_VALUE        324
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1000
+#define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

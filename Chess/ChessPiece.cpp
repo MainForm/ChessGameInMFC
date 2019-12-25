@@ -58,7 +58,7 @@ King::King(ChessBlock* ptCB, int type, int team) : ChessPiece(ptCB,type,team),bM
 {
 }
 
-bool Chess::King::IsMoved()
+bool Chess::King::IsMoved() const
 {
 	return bMove;
 }
@@ -66,6 +66,12 @@ bool Chess::King::IsMoved()
 void Chess::King::SetMove(bool bMove)
 {
 	this->bMove = bMove;
+}
+
+King Chess::King::operator=(const King& kp)
+{
+	this->bMove = kp.bMove;
+	return *this;
 }
 
 void Chess::King::Movement(SetFunc Func)
@@ -83,8 +89,36 @@ void Chess::King::Movement(SetFunc Func)
 	ChessBlock* ptTmp = nullptr;
 
 	for (int i = 0; i < 8; i++) {
-		if(ptTmp = cg.GetChessBlock(ptPos + ptMove[i]))
+		if (ptTmp = cg.GetChessBlock(ptPos + ptMove[i]))
 			(ptTmp->*Func)(1);
+	}
+
+	if (IsMoved())
+		return;
+
+	//i = 0 : KingSide i = 1 : QueenSide
+	for (int i = 0; i <= 1; i++) {
+		
+		const Rook* rkTmp = dynamic_cast<const Rook*>(cg.GetChessBlock(CPoint(i ? 0 : 7, tteam ? 0 : 7))->GetPiece());
+
+		if (rkTmp == nullptr || rkTmp->IsMoved())
+			continue;
+
+		for (int i1 = 1; i1 < 3; i1++) {
+			ChessBlock* cbCastling = cg.GetChessBlock(Foward(CPoint(i ? -i1 : i1, 0), tteam));
+			const ChessPiece* cpTmp = dynamic_cast<const ChessPiece*>(cbCastling->GetPiece());
+
+			if (cpTmp != nullptr)
+				break;
+
+			if (cbCastling->GetCheck())
+				break;
+
+			if (i1 == 2) {
+				(cbCastling->*Func)(2);
+				break;
+			}
+		}
 	}
 }
 
@@ -135,7 +169,7 @@ Rook::Rook(ChessBlock* ptCB, int type, int team) : ChessPiece(ptCB, type, team),
 
 }
 
-bool Chess::Rook::IsMoved()
+bool Chess::Rook::IsMoved() const
 {
 	return bMove;
 }

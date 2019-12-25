@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ChessGame.h"
+#include "DlgPawnPromotion.h"
 
 using namespace Chess;
 
@@ -32,7 +33,6 @@ void Chess::ChessGame::ClearAllCheck()
 
 bool Chess::ChessGame::IsCheck(int team)
 {
-	
 	ClearAllCheck();
 
 	CPoint ptIndex(0, 0);
@@ -193,6 +193,8 @@ void ChessGame::ChessBoardMessage(CPoint ptCursor)
 
 		this->ptSelect = ptCursor;
 
+		IsCheck(GetChessBlock(ptSelect)->GetChessPieceTeam());
+
 		rfCB.MovementChessPiece(false);
 
 		rfCB.SetMove(3);
@@ -204,10 +206,30 @@ void ChessGame::ChessBoardMessage(CPoint ptCursor)
 			ClearAllMove();
 			bMove = false;
 		}
+
 		if (rfCB.GetMove() == 0)
 			return;
 
 		GetChessBlock(ptSelect)->MoveChessPiece(ptCursor);
+
+		ChessBlock* cbTmp = GetChessBlock(ptCursor);
+
+		//pawn promotion
+		if (cbTmp->GetChessPieceType() == PIECE_PAWN && (ptCursor.y == 0 || ptCursor.y == 7)) {
+			DlgPawnPromotion DlgPromotion;
+			int iDlgResult = DlgPromotion.DoModal();
+			int tteam = cbTmp->GetChessPieceTeam();
+
+			cbTmp->DeleteChessPiece();
+			cbTmp->AddChessPiece(iDlgResult, tteam);
+		}
+
+		//king castling
+		if (cbTmp->GetChessPieceType() == PIECE_KING && cbTmp->GetMove() == 2) {
+			CPoint ptCastling(ptCursor.x == 6? 7 : 0, ptCursor.y);
+
+			GetChessBlock(ptCastling)->MoveChessPiece(ptCastling + CPoint(ptCastling.x == 7 ? -2 : 3, 0));
+		}
 
 		IdentifyEnPassant(ptCursor, this->ptSelect);
 

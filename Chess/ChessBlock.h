@@ -20,6 +20,7 @@ namespace Chess {
 		int GetChessPieceType() const;
 		int GetChessPieceTeam() const;
 		ChessGame* GetGame() const;
+		const ChessPiece* GetPiece() const;
 		CPoint GetPos() const;
 
 		bool IsHaveChessPiece() const;
@@ -27,8 +28,6 @@ namespace Chess {
 		bool AddChessPiece(int type,int team);
 		void DeleteChessPiece();
 		bool MoveChessPiece(CPoint cpTo,bool bCheck = false);
-
-		bool CompareChessPiece(ChessPiece* cp);
 
 		void SetMove(int value);
 		void SetCheck(int value);

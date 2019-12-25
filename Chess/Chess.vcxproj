@@ -192,6 +192,7 @@
     <ClInclude Include="ChessGame.h" />
     <ClInclude Include="ChessPiece.h" />
     <ClInclude Include="ChildView.h" />
+    <ClInclude Include="DlgPawnPromotion.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="pch.h" />
@@ -204,6 +205,7 @@
     <ClCompile Include="ChessGame.cpp" />
     <ClCompile Include="ChessPiece.cpp" />
     <ClCompile Include="ChildView.cpp" />
+    <ClCompile Include="DlgPawnPromotion.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

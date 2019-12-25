@@ -23,7 +23,7 @@ namespace Chess {
 
 	interface InterfaceMoved {
 	public:
-		virtual bool IsMoved() = 0;
+		virtual bool IsMoved() const = 0;
 		virtual void  SetMove(bool bMove) = 0;
 	};
 
@@ -56,8 +56,10 @@ namespace Chess {
 		virtual void Movement(SetFunc Func) override;
 		virtual ChessPiece* CopyChessPiece() override;
 
-		virtual bool IsMoved();
+		virtual bool IsMoved() const;
 		virtual void  SetMove(bool bMove);
+
+		King operator=(const King& kp);
 	};
 
 	class Queen : public ChessPiece
@@ -80,7 +82,7 @@ namespace Chess {
 		virtual void Movement( SetFunc Func) override;
 		virtual ChessPiece* CopyChessPiece() override;
 
-		virtual bool IsMoved();
+		virtual bool IsMoved() const;
 		virtual void  SetMove(bool bMove);
 	};
 

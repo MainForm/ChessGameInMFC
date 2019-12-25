@@ -6,6 +6,7 @@ using namespace Chess;
 
 ChessBlock::ChessBlock(ChessGame* cg, CPoint pt) : cp(nullptr), ptCG(cg), cpPos(pt),Moveable(false),bCheck(false)
 {
+
 }
 
 ChessBlock::ChessBlock(ChessBlock& cb) : cp(nullptr), ptCG(cb.ptCG), cpPos(cb.cpPos), Moveable(false), bCheck(false)
@@ -38,6 +39,11 @@ CPoint Chess::ChessBlock::GetPos() const
 ChessGame* Chess::ChessBlock::GetGame() const
 {
 	return this->ptCG;
+}
+
+const ChessPiece* Chess::ChessBlock::GetPiece() const
+{
+	return cp.get();
 }
 
 bool Chess::ChessBlock::IsHaveChessPiece() const
@@ -90,10 +96,19 @@ bool Chess::ChessBlock::MoveChessPiece(CPoint cpTo, bool bCheck)
 		return false;
 
 	ChessBlock* ptTo = ptCG->GetChessBlock(cpTo);
+	InterfaceMoved* ifMoved = dynamic_cast<InterfaceMoved * >(cp.get());
+	bool bMoved = false;
+
+	if (ifMoved != nullptr)
+		bMoved = ifMoved->IsMoved();
 
 	ptTo->DeleteChessPiece();
 	ptTo->AddChessPiece(GetChessPieceType(), GetChessPieceTeam());
 	DeleteChessPiece();
+
+	ifMoved = dynamic_cast<InterfaceMoved*>(ptTo->cp.get());
+	if (ifMoved != nullptr)
+		ifMoved->SetMove(bMoved);
 
 	if (bCheck == false) {
 		InterfaceMoved* ifMoved = nullptr;
@@ -104,11 +119,6 @@ bool Chess::ChessBlock::MoveChessPiece(CPoint cpTo, bool bCheck)
 	}
 
 	return true;
-}
-
-bool Chess::ChessBlock::CompareChessPiece(ChessPiece* cp)
-{
-	return (this->cp.get() == cp);
 }
 
 
