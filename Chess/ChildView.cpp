@@ -90,11 +90,3 @@ void CChildView::OnDestroy()
 
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 }
-
-
-void CChildView::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
-{
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
-	CWnd::OnGetMinMaxInfo(lpMMI);
-}

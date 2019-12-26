@@ -19,6 +19,7 @@ IMPLEMENT_DYNAMIC(CMainFrame, CFrameWnd)
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_CREATE()
 	ON_WM_SETFOCUS()
+	ON_WM_GETMINMAXINFO()
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -108,3 +109,14 @@ BOOL CMainFrame::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO*
 	return CFrameWnd::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
 }
 
+
+
+void CMainFrame::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	CPoint WindowSizePoint(650, 500);
+	lpMMI->ptMaxTrackSize = WindowSizePoint;
+	lpMMI->ptMinTrackSize = WindowSizePoint;
+	lpMMI->ptMaxSize = WindowSizePoint;
+	CFrameWnd::OnGetMinMaxInfo(lpMMI);
+}

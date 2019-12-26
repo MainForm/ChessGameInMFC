@@ -172,6 +172,8 @@ void ChessGame::StartGame()
 		AddChessPiece(CPoint(i, 1), PIECE_PAWN, 1);
 		AddChessPiece(CPoint(i, 6), PIECE_PAWN, 0);
 	}
+
+	turn = TEAM_WHITE;
 }
 
 void ChessGame::ChessBoardMessage(CPoint ptCursor)
@@ -193,12 +195,24 @@ void ChessGame::ChessBoardMessage(CPoint ptCursor)
 
 		this->ptSelect = ptCursor;
 
+		if (turn != GetChessBlock(ptSelect)->GetChessPieceTeam())
+			return;
+
 		IsCheck(GetChessBlock(ptSelect)->GetChessPieceTeam());
 
 		rfCB.MovementChessPiece(false);
 
-		rfCB.SetMove(3);
-		bMove = true;
+		CPoint cpTmp(0, 0);
+
+		for (cpTmp.y = 0; cpTmp.y < BLOCK_COUNT;cpTmp.y++) {
+			for (cpTmp.x = 0; cpTmp.x < BLOCK_COUNT;cpTmp.x++) {
+				if (GetChessBlock(cpTmp)->GetMove() == 1) {
+					rfCB.SetMove(3);
+					bMove = true;
+					return;
+				}
+			}
+		}
 	}
 
 	else {
@@ -238,6 +252,7 @@ void ChessGame::ChessBoardMessage(CPoint ptCursor)
 
 		ClearAllMove();
 		bMove = false;
+		turn = !turn;
 	}
 
 }
