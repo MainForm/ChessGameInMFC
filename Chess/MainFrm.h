@@ -35,7 +35,7 @@ public:
 protected:  // 컨트롤 모음이 포함된 멤버입니다.
 	CStatusBar        m_wndStatusBar;
 	CChildView    m_wndView;
-
+	CMenu m_wndMenu;
 // 생성된 메시지 맵 함수
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

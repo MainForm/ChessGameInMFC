@@ -32,6 +32,7 @@ namespace Chess {
 		void PaintChessBoard(CPaintDC& dc);
 
 		void StartGame();
+		void EndGame();
 		void ChessBoardMessage(CPoint ptCursor);
 
 		bool AddChessPiece(CPoint pt,int type,int team);

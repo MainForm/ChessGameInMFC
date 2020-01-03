@@ -192,6 +192,7 @@
     <ClInclude Include="ChessGame.h" />
     <ClInclude Include="ChessPiece.h" />
     <ClInclude Include="ChildView.h" />
+    <ClInclude Include="DlgCreateServer.h" />
     <ClInclude Include="DlgPawnPromotion.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MainFrm.h" />
@@ -205,6 +206,7 @@
     <ClCompile Include="ChessGame.cpp" />
     <ClCompile Include="ChessPiece.cpp" />
     <ClCompile Include="ChildView.cpp" />
+    <ClCompile Include="DlgCreateServer.cpp" />
     <ClCompile Include="DlgPawnPromotion.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="pch.cpp">

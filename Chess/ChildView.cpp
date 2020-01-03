@@ -7,6 +7,8 @@
 #include "Chess.h"
 #include "ChildView.h"
 
+#include "DlgCreateServer.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -28,6 +30,8 @@ BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_WM_CREATE()
 	ON_WM_DESTROY()
 	ON_WM_GETMINMAXINFO()
+	ON_COMMAND(ID_RESTART, &CChildView::OnRestart)
+	ON_COMMAND(ID_SERVER_MAKE, &CChildView::OnServerCreate)
 END_MESSAGE_MAP()
 
 // CChildView 메시지 처리기
@@ -89,4 +93,23 @@ void CChildView::OnDestroy()
 	CWnd::OnDestroy();
 
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+}
+
+
+void CChildView::OnRestart()
+{
+	this->Chess->EndGame();
+	this->Chess->StartGame();
+	Invalidate();
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CChildView::OnServerCreate()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	DlgCreateServer dlgServer;
+
+	dlgServer.DoModal();
+
 }

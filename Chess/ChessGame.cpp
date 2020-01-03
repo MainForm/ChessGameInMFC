@@ -176,6 +176,17 @@ void ChessGame::StartGame()
 	turn = TEAM_WHITE;
 }
 
+void Chess::ChessGame::EndGame()
+{
+	CPoint cpTmp(0, 0);
+
+	for (cpTmp.y = 0; cpTmp.y < BLOCK_COUNT; cpTmp.y++) {
+		for (cpTmp.x = 0; cpTmp.x < BLOCK_COUNT; cpTmp.x++) {
+			GetChessBlock(cpTmp)->DeleteChessPiece();
+		}
+	}
+}
+
 void ChessGame::ChessBoardMessage(CPoint ptCursor)
 {
 	ptCursor -= ptStart;
