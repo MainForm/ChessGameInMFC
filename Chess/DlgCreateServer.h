@@ -13,11 +13,17 @@ public:
 
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_DlgCreateServer };
+	enum { IDD = IDD_CREATESERVER };
 #endif
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 	DECLARE_MESSAGE_MAP()
+public:
+	CIPAddressCtrl ctrlIPAddress;
+//	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	CString ctrl_Port;
+	afx_msg void OnBnClickedOk();
+	virtual BOOL OnInitDialog();
 };
