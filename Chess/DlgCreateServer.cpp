@@ -24,7 +24,6 @@ DlgCreateServer::~DlgCreateServer()
 void DlgCreateServer::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_IPADDRESS1, ctrlIPAddress);
 	DDX_Text(pDX, IDC_EDIT1, ctrl_Port);
 }
 
@@ -37,7 +36,9 @@ END_MESSAGE_MAP()
 
 // DlgCreateServer 메시지 처리기
 
+/*
 
+*/
 //int DlgCreateServer::OnCreate(LPCREATESTRUCT lpCreateStruct)
 //{
 //	if (CDialog::OnCreate(lpCreateStruct) == -1)
@@ -68,8 +69,6 @@ BOOL DlgCreateServer::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
-
-	ctrlIPAddress.SetAddress(127, 0, 0, 1);
 
 
 	return TRUE;  // return TRUE unless you set the focus to a control

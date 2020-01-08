@@ -22,6 +22,7 @@
 #define IDB_KNIGHT_BLACK                214
 #define IDB_PAWN_BLACK                  215
 #define IDD_CREATESERVER                311
+#define IDD_CREATECLIENT                312
 #define IDD_PAWN_PROMOTION              322
 #define IDR_MENU                        324
 #define IDC_QUEEN                       1000
@@ -29,7 +30,7 @@
 #define IDC_BISHOP                      1002
 #define IDC_KNIGHT                      1003
 #define IDC_EDIT1                       1003
-#define IDC_IPADDRESS1                  1004
+#define IDC_IPADDRESS1                  1005
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_32773                        32773
@@ -42,9 +43,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        327
+#define _APS_NEXT_RESOURCE_VALUE        328
 #define _APS_NEXT_COMMAND_VALUE         32778
-#define _APS_NEXT_CONTROL_VALUE         1005
-#define _APS_NEXT_SYMED_VALUE           312
+#define _APS_NEXT_CONTROL_VALUE         1006
+#define _APS_NEXT_SYMED_VALUE           313
 #endif
 #endif

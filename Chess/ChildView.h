@@ -41,5 +41,6 @@ public:
 	afx_msg void OnDestroy();
 	afx_msg void OnRestart();
 	afx_msg void OnServerCreate();
+	afx_msg void OnCreateClient();
 };
 

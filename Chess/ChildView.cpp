@@ -8,6 +8,7 @@
 #include "ChildView.h"
 
 #include "DlgCreateServer.h"
+#include "DlgCreateClient.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -32,6 +33,7 @@ BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_WM_GETMINMAXINFO()
 	ON_COMMAND(ID_RESTART, &CChildView::OnRestart)
 	ON_COMMAND(ID_SERVER_MAKE, &CChildView::OnServerCreate)
+	ON_COMMAND(ID_SERVER_CONNECT, &CChildView::OnCreateClient)
 END_MESSAGE_MAP()
 
 // CChildView 메시지 처리기
@@ -111,5 +113,15 @@ void CChildView::OnServerCreate()
 	DlgCreateServer dlgServer;
 
 	dlgServer.DoModal();
+
+}
+
+
+void CChildView::OnCreateClient()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	DlgCreateClient dlgClient;
+
+	dlgClient.DoModal();
 
 }

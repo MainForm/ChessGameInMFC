@@ -21,7 +21,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	CIPAddressCtrl ctrlIPAddress;
+//	CIPAddressCtrl ctrlIPAddress;
 //	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	CString ctrl_Port;
 	afx_msg void OnBnClickedOk();
