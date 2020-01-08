@@ -54,6 +54,12 @@
     <ClInclude Include="DlgCreateClient.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="CChessServer.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CChessClient.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Chess.cpp">
@@ -84,6 +90,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="DlgCreateClient.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CChessServer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CChessClient.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

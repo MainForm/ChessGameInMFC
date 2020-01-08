@@ -124,3 +124,8 @@ void CMainFrame::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
 	lpMMI->ptMaxSize = WindowSizePoint;
 	CFrameWnd::OnGetMinMaxInfo(lpMMI);
 }
+
+CChildView* CMainFrame::GetView()
+{
+	return &m_wndView;
+}

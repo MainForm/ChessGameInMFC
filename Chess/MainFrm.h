@@ -44,6 +44,8 @@ protected:
 
 public:
 	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
+
+	CChildView* GetView();
 };
 
 

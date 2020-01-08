@@ -7,6 +7,9 @@
 #include "ChessPiece.h"
 #include "Resource.h"
 
+#include "CChessServer.h"
+#include "CChessClient.h"
+
 namespace Chess {
 
 	using namespace std;
@@ -25,8 +28,14 @@ namespace Chess {
 		bool bMove;
 		bool bEnPassant;
 		int turn;
+
+		unique_ptr<CChessServer> ptServer;
+		unique_ptr<CChessClient> ptClinet;
 	public:
+
 		ChessGame(CPoint sp = { 0,0 });
+		virtual ~ChessGame();
+
 		void PaintChessPiece(CPaintDC& dc, CPoint pt);
 		void PaintChessPieces(CPaintDC& dc);
 		void PaintChessBoard(CPaintDC& dc);
@@ -49,6 +58,14 @@ namespace Chess {
 		bool GetEnPassant();
 
 		bool IsRightPoint(CPoint pt) const;
-		virtual ~ChessGame();
+
+		bool CreateServer(int Port);
+		bool IsServerOpen();
+		void CloseServer();
+
+		bool ConnectClient(CString& IPAddress,int Port);
+		bool AcceptClient();
+		bool IsClientOpen();
+		void CloseClient();
 	};
 }

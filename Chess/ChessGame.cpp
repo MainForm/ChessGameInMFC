@@ -76,6 +76,75 @@ bool Chess::ChessGame::IsRightPoint(CPoint pt) const
 	return false;
 }
 
+bool Chess::ChessGame::CreateServer(int Port)
+{
+	ptServer = make_unique<CChessServer>();
+	if (ptServer->Create(Port, SOCK_STREAM) == false) {
+		CloseServer();
+		return true;
+	}
+
+	if (ptServer->Listen() == false) {
+		CloseServer();
+		return true;
+	}
+
+	return false;
+}
+
+bool Chess::ChessGame::IsServerOpen()
+{
+	return (bool)ptServer;
+}
+
+void Chess::ChessGame::CloseServer()
+{
+	if ((bool)ptServer) {
+		CloseClient();
+		ptServer->ShutDown();
+		ptServer->Close();
+		ptServer.release();
+	}
+}
+
+bool Chess::ChessGame::ConnectClient(CString& IPAddress, int Port)
+{
+	ptClinet = make_unique<CChessClient>();
+
+	ptClinet->Create(0,SOCK_STREAM);
+
+	if (ptClinet->Connect(IPAddress.GetString(), Port)) {
+		return true;
+	}
+	else {
+		CloseClient();
+		return false;
+	}
+}
+
+bool Chess::ChessGame::AcceptClient()
+{
+	if ((bool)ptServer == false)
+		return true;
+
+	ptClinet = make_unique<CChessClient>();
+	return ptServer->Accept(*ptClinet);
+}
+
+bool Chess::ChessGame::IsClientOpen()
+{
+	return (bool)this->ptClinet;
+}
+
+void Chess::ChessGame::CloseClient()
+{
+	if ((bool)this->ptClinet) {
+		ptClinet->ShutDown();
+		ptClinet->Close();
+		ptClinet.release();
+	}
+}
+
 ChessGame::ChessGame(CPoint sp) : ptStart(sp), iBlockSize(50), bMove(false), turn(0),bEnPassant(false)
 {
 	for (int i = 0; i < 2; i++) 

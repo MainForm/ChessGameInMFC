@@ -24,4 +24,5 @@ public:
 	virtual BOOL OnInitDialog();
 	CString ctrl_Port;
 	CIPAddressCtrl ctrl_IPAddress;
+	afx_msg void OnBnClickedOk();
 };

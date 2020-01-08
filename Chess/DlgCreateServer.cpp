@@ -6,6 +6,9 @@
 #include "DlgCreateServer.h"
 #include "afxdialogex.h"
 
+#include "MainFrm.h"
+#include "ChildView.h"
+
 // DlgCreateServer 대화 상자
 
 IMPLEMENT_DYNAMIC(DlgCreateServer, CDialog)
@@ -58,9 +61,12 @@ END_MESSAGE_MAP()
 void DlgCreateServer::OnBnClickedOk()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CDialog::OnOK();
-
+	//CDialog::OnOK();
+	CChildView* ptView = ((CMainFrame*)AfxGetMainWnd())->GetView();
 	
+	UpdateData();
+
+	EndDialog(ptView->Chess->CreateServer(_wtoi(ctrl_Port)));
 }
 
 

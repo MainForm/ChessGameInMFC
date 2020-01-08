@@ -187,6 +187,8 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CChessClient.h" />
+    <ClInclude Include="CChessServer.h" />
     <ClInclude Include="Chess.h" />
     <ClInclude Include="ChessBlock.h" />
     <ClInclude Include="ChessGame.h" />
@@ -202,6 +204,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CChessClient.cpp" />
+    <ClCompile Include="CChessServer.cpp" />
     <ClCompile Include="Chess.cpp" />
     <ClCompile Include="ChessBlock.cpp" />
     <ClCompile Include="ChessGame.cpp" />

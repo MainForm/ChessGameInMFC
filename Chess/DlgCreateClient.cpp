@@ -6,6 +6,8 @@
 #include "DlgCreateClient.h"
 #include "afxdialogex.h"
 
+#include "MainFrm.h"
+#include "ChildView.h"
 
 // DlgCreateClient 대화 상자
 
@@ -31,6 +33,7 @@ void DlgCreateClient::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(DlgCreateClient, CDialog)
+	ON_BN_CLICKED(IDOK, &DlgCreateClient::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
@@ -47,4 +50,23 @@ BOOL DlgCreateClient::OnInitDialog()
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
+}
+
+
+void DlgCreateClient::OnBnClickedOk()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	//CDialog::OnOK();
+	CChildView* ptView = ((CMainFrame*)AfxGetMainWnd())->GetView();
+
+	BYTE fields[4];
+	CString IPAddress;
+
+	UpdateData();
+
+	ctrl_IPAddress.GetAddress(fields[0], fields[1], fields[2], fields[3]);
+
+	IPAddress.Format(_T("%d.%d.%d.%d"), fields[0], fields[1], fields[2], fields[3]);
+
+	EndDialog(ptView->Chess->ConnectClient(IPAddress, _wtoi(ctrl_Port)));
 }

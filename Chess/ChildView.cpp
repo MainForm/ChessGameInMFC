@@ -10,6 +10,8 @@
 #include "DlgCreateServer.h"
 #include "DlgCreateClient.h"
 
+#include "MainFrm.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -61,6 +63,15 @@ void CChildView::OnPaint()
 
 	this->Chess->PaintChessBoard(dc);
 	this->Chess->PaintChessPieces(dc);
+
+	CString ServerMsg;
+	CString ClientMsg;
+
+	ServerMsg.Format(_T("IsServerOpen : %d"), Chess->IsServerOpen());
+	ClientMsg.Format(_T("IsClientOpen : %d"), Chess->IsClientOpen());
+
+	dc.TextOutW(450, 10, ServerMsg);
+	dc.TextOutW(450, 30, ClientMsg);
 }
 
 
@@ -95,6 +106,8 @@ void CChildView::OnDestroy()
 	CWnd::OnDestroy();
 
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+	
+	Chess->CloseServer();
 }
 
 
@@ -111,9 +124,17 @@ void CChildView::OnServerCreate()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	DlgCreateServer dlgServer;
+	CChildView* ptView = ((CMainFrame*)AfxGetMainWnd())->GetView();
 
-	dlgServer.DoModal();
+	if (ptView->Chess->IsServerOpen()) {
+		AfxMessageBox(_T("Server is already opened!"));
+		return;
+	}
+	
+	if (dlgServer.DoModal())
+		AfxMessageBox(_T("Failed to create server"));
 
+	Invalidate();
 }
 
 
@@ -122,6 +143,20 @@ void CChildView::OnCreateClient()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	DlgCreateClient dlgClient;
 
-	dlgClient.DoModal();
+	CChildView* ptView = ((CMainFrame*)AfxGetMainWnd())->GetView();
 
+	if (ptView->Chess->IsServerOpen()) {
+		AfxMessageBox(_T("Server is already opened!"));
+		return;
+	}
+
+	if (ptView->Chess->IsClientOpen()) {
+		AfxMessageBox(_T("Client is already connected!"));
+		return;
+	}
+
+	if (dlgClient.DoModal() == false)
+		AfxMessageBox(_T("Failed to connect to server"));
+
+	Invalidate();
 }
