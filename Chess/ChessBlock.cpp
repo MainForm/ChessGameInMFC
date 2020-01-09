@@ -85,6 +85,13 @@ bool ChessBlock::AddChessPiece(int type, int team)
 void Chess::ChessBlock::DeleteChessPiece()
 {
 	cp.release();
+
+	if (ptCG->GetCheckMove() == false) {
+		CString cmd;
+		cmd.Format(_T("DELETE %d %d"), this->cpPos.x, this->cpPos.y);
+		ptCG->SendCommand(cmd.GetBuffer());
+		//AfxMessageBox(cmd);
+	}
 }
 
 bool Chess::ChessBlock::MoveChessPiece(CPoint cpTo, bool bCheck)
@@ -127,7 +134,6 @@ void Chess::ChessBlock::SetMove(int value)
 	ChessBlock* ptCB = ptCG->GetChessBlock(ptCG->GetSelectedPoint());
 	int ttype = GetChessPieceType();
 	int tteam = GetChessPieceTeam();
-
 	
 	if (value == 3 || value == 2) {
 		Moveable = value;
@@ -137,18 +143,20 @@ void Chess::ChessBlock::SetMove(int value)
 	if (ptCB->GetChessPieceTeam() == GetChessPieceTeam())
 		return;
 
+	ptCG->SetCheckMove(true);
+
 	ptCB->MoveChessPiece(cpPos,true);
 
 	if (ptCG->IsCheck(GetChessPieceTeam())) {
 		MoveChessPiece(ptCB->cpPos, true);
 		ptCG->AddChessPiece(cpPos, ttype, tteam);
-
-		
+		ptCG->SetCheckMove(false);
 		return;
 	}
 	MoveChessPiece(ptCB->cpPos, true);
 	ptCG->AddChessPiece(cpPos, ttype, tteam);
 
+	ptCG->SetCheckMove(false);
 	Moveable = value;
 }
 

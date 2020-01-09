@@ -27,6 +27,7 @@ namespace Chess {
 		int iBlockSize;
 		bool bMove;
 		bool bEnPassant;
+		bool bCheckMove;
 		int turn;
 
 		unique_ptr<CChessServer> ptServer;
@@ -67,5 +68,10 @@ namespace Chess {
 		bool AcceptClient();
 		bool IsClientOpen();
 		void CloseClient();
+
+		bool SendCommand(CString Command);
+
+		bool GetCheckMove();
+		void SetCheckMove(bool bValue);
 	};
 }

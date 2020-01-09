@@ -111,7 +111,7 @@ bool Chess::ChessGame::ConnectClient(CString& IPAddress, int Port)
 {
 	ptClinet = make_unique<CChessClient>();
 
-	ptClinet->Create(0,SOCK_STREAM);
+	ptClinet->Create(0, SOCK_STREAM);
 
 	if (ptClinet->Connect(IPAddress.GetString(), Port)) {
 		return true;
@@ -143,6 +143,26 @@ void Chess::ChessGame::CloseClient()
 		ptClinet->Close();
 		ptClinet.release();
 	}
+}
+
+bool Chess::ChessGame::SendCommand(CString Command)
+{
+	if(IsClientOpen() == false)
+		return false;
+
+	ptClinet->Send(Command.GetBuffer(), Command.GetLength() * 2);
+	ptClinet->Send("\0", 2);
+	return true;
+}
+
+bool Chess::ChessGame::GetCheckMove()
+{
+	return bCheckMove;
+}
+
+void Chess::ChessGame::SetCheckMove(bool bValue)
+{
+	bCheckMove = bValue;
 }
 
 ChessGame::ChessGame(CPoint sp) : ptStart(sp), iBlockSize(50), bMove(false), turn(0),bEnPassant(false)

@@ -12,8 +12,8 @@ namespace Chess {
 		ChessGame* ptCG;
 		const CPoint cpPos;
 		int Moveable;
-		std::unique_ptr<ChessPiece> cp;
 		bool bCheck;
+		std::unique_ptr<ChessPiece> cp;
 	public:
 		ChessBlock(ChessGame* cg, CPoint pt);
 		ChessBlock(ChessBlock& cb);
