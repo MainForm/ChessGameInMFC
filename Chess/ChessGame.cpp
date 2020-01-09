@@ -151,8 +151,36 @@ bool Chess::ChessGame::SendCommand(CString Command)
 		return false;
 
 	ptClinet->Send(Command.GetBuffer(), Command.GetLength() * 2);
-	ptClinet->Send("\0", 2);
+	ptClinet->Send("/", 2);
 	return true;
+}
+
+void Chess::ChessGame::HandleComand(CString Command)
+{
+	int curPos = 0;
+	CString resToken;
+	vector<CString> arguments;
+
+	resToken = Command.Tokenize(_T(" "), curPos);
+	while (resToken != _T("")) {
+		arguments.emplace_back(resToken);
+		resToken = Command.Tokenize(_T(" "), curPos);
+	}
+
+	SetCheckMove(true);
+
+	if (arguments[0] == _T("DELETE")) {
+		DeleteChessPiece(CPoint(_wtoi(arguments[1]), _wtoi(arguments[2])));
+	}
+	else if (arguments[0] == _T("ADD")) {
+		AddChessPiece(CPoint(_wtoi(arguments[1]), _wtoi(arguments[2])), _wtoi(arguments[3]), _wtoi(arguments[4]));
+	}
+	else if (arguments[0] == _T("RESTART")) {
+		EndGame();
+		StartGame();
+	}
+
+	SetCheckMove(false);
 }
 
 bool Chess::ChessGame::GetCheckMove()
@@ -165,7 +193,8 @@ void Chess::ChessGame::SetCheckMove(bool bValue)
 	bCheckMove = bValue;
 }
 
-ChessGame::ChessGame(CPoint sp) : ptStart(sp), iBlockSize(50), bMove(false), turn(0),bEnPassant(false)
+ChessGame::ChessGame(CPoint sp) : ptStart(sp), iBlockSize(50), bMove(false), turn(0), bEnPassant(false), bCheckMove(false)
+								, PlayerTurn(0)
 {
 	for (int i = 0; i < 2; i++) 
 		for(int i1 = 0;i1 < PIECE_COUNT;i1++)
@@ -392,6 +421,11 @@ bool ChessGame::AddChessPiece(CPoint pt, int type, int team)
 {
 	Board[pt.y][pt.x]->AddChessPiece(type, team);
 	return false;
+}
+
+void Chess::ChessGame::DeleteChessPiece(CPoint pt)
+{
+	Board[pt.y][pt.x]->DeleteChessPiece();
 }
 
 CPoint Chess::ChessGame::GetSelectedPoint()

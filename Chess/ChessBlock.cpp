@@ -79,6 +79,12 @@ bool ChessBlock::AddChessPiece(int type, int team)
 		return false;
 	}
 
+	if (ptCG->GetCheckMove() == false) {
+		CString cmd;
+		cmd.Format(_T("ADD %d %d %d %d"), this->cpPos.x, this->cpPos.y,type,team);
+		ptCG->SendCommand(cmd);
+	}
+
 	return true;
 }
 
@@ -89,8 +95,7 @@ void Chess::ChessBlock::DeleteChessPiece()
 	if (ptCG->GetCheckMove() == false) {
 		CString cmd;
 		cmd.Format(_T("DELETE %d %d"), this->cpPos.x, this->cpPos.y);
-		ptCG->SendCommand(cmd.GetBuffer());
-		//AfxMessageBox(cmd);
+		ptCG->SendCommand(cmd);
 	}
 }
 

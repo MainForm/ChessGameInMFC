@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include <array>
 #include <memory>
 
@@ -29,6 +30,7 @@ namespace Chess {
 		bool bEnPassant;
 		bool bCheckMove;
 		int turn;
+		int PlayerTurn;
 
 		unique_ptr<CChessServer> ptServer;
 		unique_ptr<CChessClient> ptClinet;
@@ -46,6 +48,7 @@ namespace Chess {
 		void ChessBoardMessage(CPoint ptCursor);
 
 		bool AddChessPiece(CPoint pt,int type,int team);
+		void DeleteChessPiece(CPoint pt);
 
 		CPoint GetSelectedPoint();
 
@@ -70,6 +73,7 @@ namespace Chess {
 		void CloseClient();
 
 		bool SendCommand(CString Command);
+		void HandleComand(CString Command);
 
 		bool GetCheckMove();
 		void SetCheckMove(bool bValue);

@@ -12,6 +12,7 @@
 
 CChessServer::CChessServer()
 {
+
 }
 
 CChessServer::~CChessServer()
@@ -32,6 +33,9 @@ void CChessServer::OnAccept(int nErrorCode)
 		ptView->Chess->CloseClient();
 		AfxMessageBox(_T("Failed to Connect with Client!"));
 	}
+
+	ptView->Chess->SendCommand(_T("RESTART"));
+	ptView->Chess->HandleComand(_T("RESTART"));
 
 	ptView->Invalidate();
 
