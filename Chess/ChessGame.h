@@ -77,5 +77,8 @@ namespace Chess {
 
 		bool GetCheckMove();
 		void SetCheckMove(bool bValue);
+
+		int GetTurn();
+		int GetPlayerTurn();
 	};
 }

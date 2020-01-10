@@ -11,6 +11,7 @@
 #include "DlgCreateClient.h"
 
 #include "MainFrm.h"
+#include "ChessPiece.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -63,15 +64,23 @@ void CChildView::OnPaint()
 
 	this->Chess->PaintChessBoard(dc);
 	this->Chess->PaintChessPieces(dc);
+	
+	CString TurnMsg = _T("Turn : ");
 
-	CString ServerMsg;
-	CString ClientMsg;
+	if (Chess->IsClientOpen()) {
+		dc.TextOutW(450, 10, _T("Playing with other player."));
+	}
+	else if (Chess->IsServerOpen()) {
+		dc.TextOutW(450, 10, _T("Waiting other player...."));
+	}
 
-	ServerMsg.Format(_T("IsServerOpen : %d"), Chess->IsServerOpen());
-	ClientMsg.Format(_T("IsClientOpen : %d"), Chess->IsClientOpen());
-
-	dc.TextOutW(450, 10, ServerMsg);
-	dc.TextOutW(450, 30, ClientMsg);
+	if (Chess->GetTurn() == Chess::TEAM_WHITE) {
+		TurnMsg += _T("White");
+	}
+	else {
+		TurnMsg += _T("Black");
+	}
+	dc.TextOutW(450, 30, TurnMsg);
 }
 
 

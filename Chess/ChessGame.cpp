@@ -179,6 +179,9 @@ void Chess::ChessGame::HandleComand(CString Command)
 		EndGame();
 		StartGame();
 	}
+	else if (arguments[0] == _T("ENDTURN")) {
+		turn = !turn;
+	}
 
 	SetCheckMove(false);
 }
@@ -191,6 +194,16 @@ bool Chess::ChessGame::GetCheckMove()
 void Chess::ChessGame::SetCheckMove(bool bValue)
 {
 	bCheckMove = bValue;
+}
+
+int Chess::ChessGame::GetTurn()
+{
+	return turn;
+}
+
+int Chess::ChessGame::GetPlayerTurn()
+{
+	return PlayerTurn;
 }
 
 ChessGame::ChessGame(CPoint sp) : ptStart(sp), iBlockSize(50), bMove(false), turn(0), bEnPassant(false), bCheckMove(false)
@@ -380,6 +393,7 @@ void ChessGame::ChessBoardMessage(CPoint ptCursor)
 			MessageBox(NULL, _T("Check"), _T("Test"), MB_OK);
 
 		ClearAllMove();
+		SendCommand(_T("ENDTURN"));
 		bMove = false;
 		turn = !turn;
 	}
