@@ -134,9 +134,8 @@ bool Chess::ChessBlock::MoveChessPiece(CPoint cpTo, bool bCheck)
 }
 
 
-void Chess::ChessBlock::SetMove(int value)
+void Chess::ChessBlock::SetMove(int value, ChessBlock* ptCB)
 {
-	ChessBlock* ptCB = ptCG->GetChessBlock(ptCG->GetSelectedPoint());
 	int ttype = GetChessPieceType();
 	int tteam = GetChessPieceTeam();
 	
@@ -165,7 +164,7 @@ void Chess::ChessBlock::SetMove(int value)
 	Moveable = value;
 }
 
-void Chess::ChessBlock::SetCheck(int value)
+void Chess::ChessBlock::SetCheck(int value, ChessBlock* ptCB)
 {
 	bCheck = value;
 }

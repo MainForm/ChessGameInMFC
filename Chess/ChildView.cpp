@@ -147,20 +147,17 @@ void CChildView::OnServerCreate()
 	Invalidate();
 }
 
-
 void CChildView::OnCreateClient()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	DlgCreateClient dlgClient;
 
-	CChildView* ptView = ((CMainFrame*)AfxGetMainWnd())->GetView();
-
-	if (ptView->Chess->IsServerOpen()) {
+	if (Chess->IsServerOpen()) {
 		AfxMessageBox(_T("Server is already opened!"));
 		return;
 	}
 
-	if (ptView->Chess->IsClientOpen()) {
+	if (Chess->IsClientOpen()) {
 		AfxMessageBox(_T("Client is already connected!"));
 		return;
 	}

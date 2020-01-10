@@ -29,8 +29,8 @@ namespace Chess {
 		void DeleteChessPiece();
 		bool MoveChessPiece(CPoint cpTo,bool bCheck = false);
 
-		void SetMove(int value);
-		void SetCheck(int value);
+		void SetMove(int value, ChessBlock* ptCB = nullptr);
+		void SetCheck(int value, ChessBlock* ptCB = nullptr);
 		int GetMove() const;
 		bool GetCheck() const;
 

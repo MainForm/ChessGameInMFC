@@ -19,7 +19,7 @@ namespace Chess {
 	class ChessGame;
 	class ChessBlock;
 
-	using SetFunc = void (ChessBlock::*)(int);
+	using SetFunc = void (ChessBlock::*)(int, ChessBlock *);
 
 	interface InterfaceMoved {
 	public:

@@ -57,6 +57,7 @@ namespace Chess {
 		void ClearAllCheck();
 
 		bool IsCheck(int team);
+		bool IsCheckMate(int team);
 
 		void IdentifyEnPassant(CPoint cpTo,CPoint cpFrom);
 		bool GetEnPassant();

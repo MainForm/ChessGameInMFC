@@ -2,6 +2,9 @@
 #include "ChessGame.h"
 #include "DlgPawnPromotion.h"
 
+#include "MainFrm.h"
+#include "ChildView.h"
+
 using namespace Chess;
 
 ChessBlock* Chess::ChessGame::GetChessBlock(CPoint pt)
@@ -12,6 +15,7 @@ ChessBlock* Chess::ChessGame::GetChessBlock(CPoint pt)
 	
 	return Board[pt.y][pt.x].get();
 }
+
 
 void Chess::ChessGame::ClearAllMove()
 {
@@ -67,6 +71,42 @@ bool Chess::ChessGame::IsCheck(int team)
 
 	return false;
 }
+
+bool Chess::ChessGame::IsCheckMate(int team)
+{
+	CChildView* ptView = ((CMainFrame*)AfxGetMainWnd())->GetView();
+
+	ClearAllMove();
+	CPoint ptIndex(0, 0);
+	for (ptIndex.y = 0; ptIndex.y < BLOCK_COUNT; ptIndex.y++) {
+		for (ptIndex.x = 0; ptIndex.x < BLOCK_COUNT; ptIndex.x++) {
+			ChessBlock* ptCB = GetChessBlock(ptIndex);
+
+			if (ptCB == nullptr)
+				continue;
+
+			if (ptCB->GetChessPieceTeam() != team)
+				continue;
+
+			ptCB->MovementChessPiece(false);
+		}
+	}
+
+	for (ptIndex.y = 0; ptIndex.y < BLOCK_COUNT; ptIndex.y++) {
+		for (ptIndex.x = 0; ptIndex.x < BLOCK_COUNT; ptIndex.x++) {
+			ChessBlock* ptCB = GetChessBlock(ptIndex);
+			if (ptCB == nullptr)
+				continue;
+
+			if (ptCB->GetMove()) 
+				return false;
+			
+		}
+	}
+	
+	return true;
+}
+
 
 bool Chess::ChessGame::IsRightPoint(CPoint pt) const
 {
@@ -389,8 +429,10 @@ void ChessGame::ChessBoardMessage(CPoint ptCursor)
 
 		IdentifyEnPassant(ptCursor, this->ptSelect);
 
-		if (IsCheck(!GetChessBlock(ptCursor)->GetChessPieceTeam()))
-			MessageBox(NULL, _T("Check"), _T("Test"), MB_OK);
+		if (IsCheckMate(!GetChessBlock(ptCursor)->GetChessPieceTeam()))
+			AfxMessageBox(_T("CheckMate!!"));
+		else if (IsCheck(!GetChessBlock(ptCursor)->GetChessPieceTeam()))
+			AfxMessageBox(_T("Check!!"));
 
 		ClearAllMove();
 		SendCommand(_T("ENDTURN"));

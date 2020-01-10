@@ -90,7 +90,7 @@ void Chess::King::Movement(SetFunc Func)
 
 	for (int i = 0; i < 8; i++) {
 		if (ptTmp = cg.GetChessBlock(ptPos + ptMove[i]))
-			(ptTmp->*Func)(1);
+			(ptTmp->*Func)(1,GetBlock());
 	}
 
 	if (IsMoved())
@@ -115,7 +115,7 @@ void Chess::King::Movement(SetFunc Func)
 				break;
 
 			if (i1 == 2) {
-				(cbCastling->*Func)(2);
+				(cbCastling->*Func)(2, GetBlock());
 				break;
 			}
 		}
@@ -150,7 +150,7 @@ void Chess::Queen::Movement(SetFunc Func)
 	for (int i = 0; i < 8; i++) {
 		for (CPoint ptIndex = ptPos + ptMove[i]; cg.IsRightPoint(ptIndex); ptIndex += ptMove[i]) {
 			if (ptTmp = cg.GetChessBlock(ptIndex)) {
-				(ptTmp->*Func)(1);
+				(ptTmp->*Func)(1,GetBlock());
 
 				if (ptTmp->IsHaveChessPiece() == true)
 					break;
@@ -197,7 +197,7 @@ void Chess::Rook::Movement( SetFunc Func)
 	for (int i = 0; i < 4; i++) {
 		for (CPoint ptIndex = ptPos + ptMove[i]; cg.IsRightPoint(ptIndex); ptIndex += ptMove[i]) {
 			if (ptTmp = cg.GetChessBlock(ptIndex)) {
-				(ptTmp->*Func)(1);
+				(ptTmp->*Func)(1, GetBlock());
 
 				if (ptTmp->IsHaveChessPiece() == true)
 					break;
@@ -234,7 +234,7 @@ void Chess::Bishop::Movement( SetFunc Func)
 	for (int i = 0; i < 4; i++) {
 		for (CPoint ptIndex = ptPos + ptMove[i]; cg.IsRightPoint(ptIndex); ptIndex += ptMove[i]) {
 			if (ptTmp = cg.GetChessBlock(ptIndex)) {
-				(ptTmp->*Func)(1);
+				(ptTmp->*Func)(1, GetBlock());
 
 				if (ptTmp->IsHaveChessPiece() == true)
 					break;
@@ -272,7 +272,7 @@ void Chess::Knight::Movement(SetFunc Func)
 
 	for (int i = 0; i < 8; i++) {
 		if(ptTmp = cg.GetChessBlock(ptPos + ptMove[i]))
-			(ptTmp->*Func)( 1);
+			(ptTmp->*Func)( 1, GetBlock());
 	}
 }
 
@@ -300,7 +300,7 @@ void Chess::Pawn::Movement( SetFunc Func)
 			if (ptTmp = cg->GetChessBlock(Foward(CPoint(i, 0), tteam))) {
 
 				if (ptTmp->GetChessPieceTeam() != tteam && ptTmp->GetChessPieceType() == PIECE_PAWN) {
-					(cg->GetChessBlock(Foward(CPoint(i, 1), tteam))->*Func)(2);
+					(cg->GetChessBlock(Foward(CPoint(i, 1), tteam))->*Func)(2, GetBlock());
 				}
 			}
 		}
@@ -308,12 +308,12 @@ void Chess::Pawn::Movement( SetFunc Func)
 
 	if (ptTmp = cg->GetChessBlock(Foward(CPoint(0, 1), tteam))) {
 		if (ptTmp->IsHaveChessPiece() == false) {
-			(ptTmp->*Func)(1);
+			(ptTmp->*Func)(1, GetBlock());
 
 			if (ptTmp = cg->GetChessBlock(Foward(CPoint(0, 2), tteam))) {
 
 				if (ptTmp != nullptr && (ptPos.y == 1 || ptPos.y == 6) && ptTmp->IsHaveChessPiece() == false)
-					(ptTmp->*Func)(1);
+					(ptTmp->*Func)(1, GetBlock());
 			}
 		}
 	}
@@ -322,7 +322,7 @@ void Chess::Pawn::Movement( SetFunc Func)
 		if (ptTmp = cg->GetChessBlock(Foward(CPoint(i, 1), tteam))) {
 
 			if (ptTmp->IsHaveChessPiece() == true) {
-				(ptTmp->*Func)(1);
+				(ptTmp->*Func)(1, GetBlock());
 			}
 		}
 	}
